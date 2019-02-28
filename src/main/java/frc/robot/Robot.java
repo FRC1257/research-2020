@@ -2,9 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.subsystems.DriveTrain;
-import frc.util.ConsolePrinter;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Command;
 
 public class Robot extends TimedRobot {
 	

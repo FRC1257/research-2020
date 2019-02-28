@@ -33,7 +33,7 @@ public class DriveTrain extends Subsystem {
     /**
      * Constructs a new {@code DriveTrain} object.
      */
-    public DriveTrain() {
+    private DriveTrain() {
 
         flDrive = new FlakeMin(RobotMap.DRIVE_FL_MOTOR_ID, MotorType.kBrushless, true);
         frDrive = new FlakeMin(RobotMap.DRIVE_FR_MOTOR_ID, MotorType.kBrushless, false);
