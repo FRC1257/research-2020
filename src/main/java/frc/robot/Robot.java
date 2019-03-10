@@ -4,10 +4,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import frc.util.*;
+
 public class Robot extends TimedRobot {
 	
 	public static DriveTrain driveTrain;
 	public static OI oi;
+	public static Gyro gyro;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -17,6 +20,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		driveTrain = DriveTrain.getInstance();
 		oi = OI.getInstance();
+		gyro = Gyro.getInstance();
 	}
 
 	/**

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.commands.Drive;
+import frc.robot.Robot;
 
 /**
  * <h1>Drivetrain</h1>
@@ -30,6 +31,8 @@ public class DriveTrain extends Subsystem {
 
     private boolean reverse;
 
+    private double[][] robotPos;
+
     /**
      * Constructs a new {@code DriveTrain} object.
      */
@@ -46,6 +49,10 @@ public class DriveTrain extends Subsystem {
         brDrive.follow(frDrive);
 
         driveTrain = new DifferentialDrive(flDrive, frDrive);
+
+        this.robotPos = new double[][] {
+            {0.0, 0.0},
+        };
 
         reverse = false;
     }
@@ -72,6 +79,11 @@ public class DriveTrain extends Subsystem {
     public void drive(double x, double z) {
         if(!reverse) driveTrain.arcadeDrive(x, z);
         else driveTrain.arcadeDrive(-x, z);
+    }
+
+    public void tankDrive(double l, double r) {
+        if(!reverse) driveTrain.tankDrive(l, r);
+        else driveTrain.tankDrive(-l, -r);
     }
 
     /**
@@ -185,5 +197,19 @@ public class DriveTrain extends Subsystem {
             instance = new DriveTrain();
         }
         return instance;
+    }
+
+    public void updatePos() {
+        this.robotPos[0][0] += (flDrive.getEncoderPositionFeet() + frDrive.getEncoderPositionFeet()) * 0.5 * Math.cos(Robot.gyro.getAngle());
+        this.robotPos[0][1] += (flDrive.getEncoderPositionFeet() + frDrive.getEncoderPositionFeet()) * 0.5 * Math.sin(Robot.gyro.getAngle());
+
+        flDrive.resetEncoderPosition();
+        frDrive.resetEncoderPosition();
+    }
+
+    public double[][] showRobotPos() {
+        updatePos();
+        
+        return this.robotPos;
     }
 }

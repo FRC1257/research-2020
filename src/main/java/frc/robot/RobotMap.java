@@ -28,6 +28,7 @@ public class RobotMap {
     public static final int NEO_RUN_CURRENT = 1;
     public static final int NEO_MIN_RPM = 10;
     public static final int NEO_MAX_RPM = 5500;
+    public static final double NEO_MAX_ACCEL = 10.0;
     public static final double NEO_DEADBAND = 0.08;
 
     // Drivetrain wheel
@@ -36,4 +37,7 @@ public class RobotMap {
 
     // For ConsolePrinter
     public static final boolean PRINT_SD_DEBUG_DATA = true;
+
+    // Distance between wheels, in revolutions of the drivetrain wheel
+    public static final double TRACKWIDTH = 5.4;
 }
