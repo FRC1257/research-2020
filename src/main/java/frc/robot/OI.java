@@ -50,6 +50,7 @@ public class OI {
         if(Math.abs(in) < RobotMap.NEO_DEADBAND) {
             return 0;
         }
+        
         return in;
     }
 }

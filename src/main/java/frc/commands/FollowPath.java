@@ -14,12 +14,24 @@ import frc.robot.Robot;
 import frc.util.motionprofile.PathGenerator;
 import frc.robot.RobotMap;
 
+/**
+ * <h1>FollowPath</h1>
+ * Follows a given path. Used in conjunction with motion profiling.
+ * 
+ * @author Allen Du
+ * @since 2019-03-10
+ */
 public class FollowPath extends Command {
     public double[][] path;
     public PathGenerator profile;
     public double maxVel;
     public double maxAccel;
 
+    /**
+     * Constructor.
+     * 
+     * @param path The path to follow, given in an n*2 array.
+     */
   public FollowPath(double[][] path) {
     requires(Robot.driveTrain);
 
@@ -39,16 +51,24 @@ public class FollowPath extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.tankDrive(this.profile.velocities(RobotMap.TRACKWIDTH, Robot.driveTrain.showRobotPos())[0], this.profile.velocities(RobotMap.TRACKWIDTH, Robot.driveTrain.showRobotPos())[1]);
+    Robot.driveTrain.showRobotPos();
+    Robot.driveTrain.tankDrive(this.profile.velocity(RobotMap.TRACKWIDTH, true), this.profile.velocity(RobotMap.TRACKWIDTH, false));
   }
 
-  // Make this return true when this Command no longer needs to run execute()
+  /**
+   * Is the command finished?
+   * 
+   * @return true if the robot is close enough to our endpoint; false if not
+   */
   @Override
   protected boolean isFinished() {
-    int index = (int) Math.round(this.profile.lookaheadPoint(Robot.driveTrain.showRobotPos())[1][1]);
+    Robot.driveTrain.showRobotPos();
+    int index = (int) Math.round(this.profile.lookaheadPointIndex());
     if(index == this.path.length - 1 && Math.abs(Robot.driveTrain.showRobotPos()[0][0] - this.path[this.path.length - 1][0]) < 0.08 && Math.abs(Robot.driveTrain.showRobotPos()[0][1] - this.path[this.path.length - 1][1]) < 0.08) {
+      
       return true;
     }
+
     return false;
   }
 

@@ -16,7 +16,7 @@ import frc.robot.Robot;
  * <h1>Drivetrain</h1>
  * This is the drivetrain subsystem.
  * @author Allen Du
- * @since 2019-01-21
+ * @since 2019-03-10
  */
 public class DriveTrain extends Subsystem {
 
@@ -199,6 +199,9 @@ public class DriveTrain extends Subsystem {
         return instance;
     }
 
+    /**
+     * Updates our robot position.
+     */
     public void updatePos() {
         this.robotPos[0][0] += (flDrive.getEncoderPositionFeet() + frDrive.getEncoderPositionFeet()) * 0.5 * Math.cos(Robot.gyro.getAngle());
         this.robotPos[0][1] += (flDrive.getEncoderPositionFeet() + frDrive.getEncoderPositionFeet()) * 0.5 * Math.sin(Robot.gyro.getAngle());
@@ -207,6 +210,9 @@ public class DriveTrain extends Subsystem {
         frDrive.resetEncoderPosition();
     }
 
+    /**
+     * @return Updated robot position.
+     */
     public double[][] showRobotPos() {
         updatePos();
         
