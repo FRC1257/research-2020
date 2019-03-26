@@ -39,7 +39,8 @@ public class FollowPath extends Command {
     this.maxAccel = RobotMap.NEO_MAX_ACCEL;
     this.profile = new PathGenerator(this.path, this.maxVel, this.maxAccel, 17.0);
 
-    this.profile.updatePos(0.0, 0.0);
+    // We're making the coordinates field-centric, so update the robot position based on the position onfield.
+    // this.profile.updatePos(0.0, 0.0);
   }
 
   // Called just before this Command runs the first time
@@ -52,6 +53,7 @@ public class FollowPath extends Command {
   @Override
   protected void execute() {
     Robot.driveTrain.showRobotPos();
+    // Left, then right. Somehow you're going to forget this.
     Robot.driveTrain.tankDrive(this.profile.velocity(RobotMap.TRACKWIDTH, true), this.profile.velocity(RobotMap.TRACKWIDTH, false));
   }
 
@@ -62,9 +64,8 @@ public class FollowPath extends Command {
    */
   @Override
   protected boolean isFinished() {
-    Robot.driveTrain.showRobotPos();
-    int index = (int) Math.round(this.profile.lookaheadPointIndex());
-    if(index == this.path.length - 1 && Math.abs(Robot.driveTrain.showRobotPos()[0][0] - this.path[this.path.length - 1][0]) < 0.08 && Math.abs(Robot.driveTrain.showRobotPos()[0][1] - this.path[this.path.length - 1][1]) < 0.08) {
+    // Tolerance of distance
+    if(Math.abs(Robot.driveTrain.showRobotPos()[0][0] - this.path[this.path.length - 1][0]) < 0.08 && Math.abs(Robot.driveTrain.showRobotPos()[0][1] - this.path[this.path.length - 1][1]) < 0.08) {
       
       return true;
     }
