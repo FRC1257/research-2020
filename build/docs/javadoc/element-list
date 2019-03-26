@@ -1,3 +1,5 @@
+frc.commands
 frc.robot
 frc.subsystems
 frc.util
+frc.util.motionprofile
