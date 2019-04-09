@@ -1,42 +1,36 @@
 package frc.robot;
 
-import frc.util.SnailController;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.util.SnailController;
+import static frc.robot.util.SnailController.*;
 
 public class OI {
 
     /**
-     * Contains all of the mappings for controls for our robot
+     * This class is the glue that binds the controls on the physical operator
+     * interface to the commands and command groups that allow control of the robot.
      */
-    
+
     private static OI instance = null;
 
-    public SnailController driveController;
-    public SnailController operatorController;
+    private SnailController driveController;
+    private SnailController operatorController;
 
     private OI() {
-        driveController = new SnailController(RobotMap.DRIVE_CONTROLLER_PORT);
-        operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
+        driveController = new SnailController(RobotMap.CONTROLLER_DRIVE_PORT);
+        operatorController = new SnailController(RobotMap.CONTROLLER_OPERATOR_PORT);
+
+        // Drive
+        
     }
 
-    // Drivetrain
+    // Drive
     public double getDriveForwardSpeed() {
-        return applyDeadband(driveController.getForwardSpeed());
+        return driveController.getForwardSpeed();
     }
 
     public double getDriveTurnSpeed() {
-        return applyDeadband(driveController.getTurnSpeed());
-    }
-
-    public boolean getDriveToggleReverse() {
-        return driveController.getBButtonPressed();
-    }
-
-    public boolean getDriveTestFL() {
-        return driveController.getXButton();
-    }
-
-    public boolean getDriveTestFR() {
-        return driveController.getYButton();
+        return driveController.getTurnSpeed();
     }
 
     public static OI getInstance() {
@@ -44,12 +38,5 @@ public class OI {
             instance = new OI();
         }
         return instance;
-    }
-
-    public double applyDeadband(double in) {
-        if(Math.abs(in) < RobotMap.NEO_DEADBAND) {
-            return 0;
-        }
-        return in;
     }
 }

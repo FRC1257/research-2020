@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"frc.robot"},{"l":"frc.subsystems"},{"l":"frc.util"}]

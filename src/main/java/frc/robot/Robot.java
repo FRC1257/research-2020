@@ -1,61 +1,73 @@
 package frc.robot;
 
+import easypath.EasyPath;
+import easypath.PathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.paths.RightMiddleHatch;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.util.Gyro;
+import easypath.EasyPathConfig;
 
 public class Robot extends TimedRobot {
 	
-	public static DriveTrain driveTrain;
-	public static OI oi;
+	public static Drivetrain drivetrain;
+	
+	private Gyro gyro;
+	private EasyPathConfig config;
+    
+    private double lastTimeStamp;
 
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
+    private Command autonomousCommand;
+
 	@Override
 	public void robotInit() {
-		driveTrain = DriveTrain.getInstance();
-		oi = OI.getInstance();
+		drivetrain = new Drivetrain();
+
+		gyro = Gyro.getInstance();
+
+		config = new EasyPathConfig(drivetrain, drivetrain::tankDrive,
+				() -> PathUtil.defaultLengthDrivenEstimator(drivetrain::getLeftEncoderPosition, drivetrain::getRightEncoderPosition),
+				gyro::getRobotAngle,
+				drivetrain::reset,
+				0.07);
+		config.setSwapDrivingDirection(false);
+		config.setSwapTurningDirection(false);
+
+		EasyPath.configure(config);
 	}
 
-	/**
-	 * This function is run once each time the robot enters autonomous mode.
-	 */
 	@Override
 	public void autonomousInit() {
-
+		autonomousCommand = new RightMiddleHatch();
+		autonomousCommand.start();
 	}
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
 	@Override
 	public void autonomousPeriodic() {
-
+		Scheduler.getInstance().run();
 	}
-
-	/**
-	 * This function is called once each time when the robot enters test mode.
-	 */
+	
 	@Override
-	public void testInit() {
-
+	public void teleopInit() {
+		autonomousCommand.cancel();
 	}
-
-	/**
-	 * This function is called periodically during teleoperated mode.
-	 */
+	
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		updateSubsystems();
 	}
 
-	/**
-	 * This function is called periodically during test mode.
-	 */
-	@Override
-	public void testPeriodic() {
+	private void updateSubsystems() {
+		drivetrain.update(Timer.getFPGATimestamp() - lastTimeStamp);
 
+		lastTimeStamp = Timer.getFPGATimestamp();
+	}
+
+	private void getConstantTuning() {
+		drivetrain.getConstantTuning();
 	}
 }
