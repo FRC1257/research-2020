@@ -1,6 +1,7 @@
 package frc.robot;
 
-import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.cargoarm.MoveCargoCommand;
+import frc.robot.commands.cargoarm.MoveRocketCommand;
 import frc.robot.util.SnailController;
 import static frc.robot.util.SnailController.*;
 
@@ -20,17 +21,12 @@ public class OI {
         driveController = new SnailController(RobotMap.CONTROLLER_DRIVE_PORT);
         operatorController = new SnailController(RobotMap.CONTROLLER_OPERATOR_PORT);
 
-        // Drive
-        
+        operatorController.leftBumper.whenPressed(new MoveCargoCommand());
+        operatorController.rightBumper.whenPressed(new MoveRocketCommand());
     }
 
-    // Drive
-    public double getDriveForwardSpeed() {
-        return driveController.getForwardSpeed();
-    }
-
-    public double getDriveTurnSpeed() {
-        return driveController.getTurnSpeed();
+    public double getCargoArmSpeed() {
+        return operatorController.getRightStickY();
     }
 
     public static OI getInstance() {
