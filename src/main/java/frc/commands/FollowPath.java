@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Robot;
-import frc.util.motionprofile.PathGenerator;
+import frc.util.motionprofile.*;
 import frc.robot.RobotMap;
 
 /**
@@ -32,12 +32,13 @@ public class FollowPath extends Command {
      * 
      * @param path The path to follow, given in an n*2 array.
      */
-  public FollowPath(double[][] path) {
+  public FollowPath(Spline path) {
     requires(Robot.driveTrain);
 
     this.maxVel = RobotMap.NEO_MAX_RPM;
     this.maxAccel = RobotMap.NEO_MAX_ACCEL;
-    this.profile = new PathGenerator(this.path, this.maxVel, this.maxAccel, 17.0);
+    this.profile = new PathGenerator(path, this.maxVel, this.maxAccel, 17.0);
+    this.path = this.profile.getPath();
 
     // We're making the coordinates field-centric, so update the robot position based on the position onfield.
     // this.profile.updatePos(0.0, 0.0);

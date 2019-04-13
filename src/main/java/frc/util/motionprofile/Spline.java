@@ -127,16 +127,16 @@ package frc.util.motionprofile;
     }
 
     /**
-     * Spline interpolation. 
+     * Spline interpolation. The start and endpoints will always be included.
      * 
      * @param interval See {@code arcLength}.
      * @param spacing The space, in inches, between each point.
-     * @return An n*4 array of (x, y, xVel, yVel) coordinates of interpolated points.
+     * @return An n*4 array of (x, y, xVel, yVel) coordinates of interpolated points. 
      */
     public double[][] interpolate(double interval, double spacing) {
         double arc = arcLength(interval);
         int numPoints = (int) Math.floor(arc / spacing);
-        double[][] result = new double[numPoints][4];
+        double[][] result = new double[numPoints + 1][5];
         for(int i = 0; i <= numPoints; ++i) {
             double[][] temp = getPosition(i / numPoints);
             double[][] temp2 = getVelocity(i / numPoints);
@@ -145,8 +145,39 @@ package frc.util.motionprofile;
             result[i][1] = temp[0][1];
             result[i][2] = temp2[0][0];
             result[i][3] = temp2[0][1];
+            result[i][4] = speed(i / numPoints);
         }
 
         return result;
+    }
+
+    /**
+     * If you want the robot to end at a certain angle.
+     * 
+     * @param angle The angle, in degrees, from the zero point.
+     * @param velocity The magnitude of the velocity vector of the endpoint.
+     * @param acceleration The magnitude of the acceleration vector of the endpoint.
+     * 
+     * @return A 2*2 array, with the first row being the velocity vector and the next being the acceleration vector.
+     */
+    public static double[][] givenAngle(double angle, double velocity, double acceleration) {
+        double angleRadian = angle * Math.PI / 180;
+        double[][] result = new double[][] {
+            {velocity * Math.cos(angleRadian), velocity * Math.sin(angleRadian)},
+            {acceleration * Math.cos(angleRadian), velocity * Math.sin(angleRadian)}
+        };
+
+        return result;
+    }
+
+    /**
+     * Gets the speed given a parameter. See {@code getVelocity} for the format.
+     * 
+     * @return The magnitude of the velocity vector.
+     */
+    public double speed(double t) {
+        double[][] temp = getVelocity(t);
+
+        return Math.hypot(temp[0][0], temp[0][1]);
     }
  }

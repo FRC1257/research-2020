@@ -1,5 +1,7 @@
 package frc.util.motionprofile;
 
+import frc.util.motionprofile.Spline;
+
 /**
  * <h1>PathGenerator</h1>
  * Generates a motion-profiled pure pursuit path given a path and some robot parameters. 
@@ -24,16 +26,21 @@ public class PathGenerator {
 	 * The constructor for a {@code PathGenerator} object.
 	 * <b>UNITS ARE IN INCHES.</b>
 	 * 
-	 * @param path The path, in (x, y)-coordinates relative to the robot's starting position.
+	 * @param path The path, represented by a spline.
 	 * @param pathMaxVel The maxmimum theoretical velocity the path can be.
 	 * @param accel The acceleration of the robot.
 	 * @param lookaheadRadius The radius for the lookahead point. Usually a value from 12-25 inches.
 	 */
-	public PathGenerator(double[][] path, double pathMaxVel, double accel, double lookaheadRadius) {
-		// Doesn't have to be 6, but it is 6.
-		this.path = inject(6.0);
-		// May change the second and third values depending on the path.
-		this.path = smoother(this.path, 0.87, 0.13, 0.001);
+	public PathGenerator(Spline path, double pathMaxVel, double accel, double lookaheadRadius) {
+		// // Doesn't have to be 6, but it is 6.
+		// this.path = inject(6.0);
+		// // May change the second and third values depending on the path.
+		// this.path = smoother(this.path, 0.87, 0.13, 0.001);
+		double[][] temp = path.interpolate(0.01, 6);
+		for(int i = 0; i < temp.length; ++i) {
+			this.path[i][0] = temp[i][0];
+			this.path[i][1] = temp[i][1];
+		}
 		this.pathMaxVel = pathMaxVel;
 		this.accel = accel;
 		this.robotPos = new double[][] {
@@ -47,127 +54,127 @@ public class PathGenerator {
 		};
 		this.prevClosestPoint = 0;
 
-		this.segV = new double[this.path.length - 1];
-		this.segV[this.path.length - 2] = this.pathMaxVel;
-		for(int i = this.path.length - 3; i >= 1; i--) {
-			double[][] temp = new double[][] {
+		this.segV = new double[this.path.length];
+		this.segV[this.path.length- 1] = 0.0;
+		for(int i = this.path.length - 2; i >= 0; i--) {
+			double[][] temp2 = new double[][] {
 				{this.path[i - 1][0], this.path[i - 1][1]},
 				{this.path[i][0], this.path[i][1]},
 				{this.path[i + 1][0], this.path[i + 1][1]},
 			};
-			this.segV[i] = Math.min(maxVelocity(temp), Math.sqrt(this.segV[i + 1] * this.segV[i + 1] - 2 * this.accel * Magnitude(this.path[i + 1][0], this.path[i + 1][1], this.path[i][0], this.path[i][1])));
+			this.segV[i] = Math.min(maxVelocity(temp2), Math.sqrt(this.segV[i + 1] * this.segV[i + 1] - 2 * this.accel * Magnitude(this.path[i + 1][0], this.path[i + 1][1], this.path[i][0], this.path[i][1])));
 		}
 	}
 
-	/**
-	 * Point injector. It injects evenly spaced points along a given path.
-	 * 
-	 * @return This is the path used in the smoother.
-	 */
-	public double[][] inject(double spacing) {
-		int totalPointsThatFit = 0;
+	// /**
+	//  * Point injector. It injects evenly spaced points along a given path.
+	//  * 
+	//  * @return This is the path used in the smoother.
+	//  */
+	// public double[][] inject(double spacing) {
+	// 	int totalPointsThatFit = 0;
 
-		for(int i = 0; i < this.path.length - 1; ++i) {
-			double[][] vector = new double[][] {
-				{this.path[i + 1][0] - this.path[i][0], this.path[i + 1][1] - this.path[i][1]},
-			};
+	// 	for(int i = 0; i < this.path.length - 1; ++i) {
+	// 		double[][] vector = new double[][] {
+	// 			{this.path[i + 1][0] - this.path[i][0], this.path[i + 1][1] - this.path[i][1]},
+	// 		};
 
-			int pointsThatFit = (int) Math.ceil(Math.sqrt(vector[0][0] * vector[0][0] + vector[0][1] * vector[0][1]) / spacing);
-			totalPointsThatFit += pointsThatFit;
-		}
-		// System.out.println("Total fitting points: " + totalPointsThatFit);
-		double[][] result = new double[totalPointsThatFit + 1][2];
+	// 		int pointsThatFit = (int) Math.ceil(Math.sqrt(vector[0][0] * vector[0][0] + vector[0][1] * vector[0][1]) / spacing);
+	// 		totalPointsThatFit += pointsThatFit;
+	// 	}
+	// 	// System.out.println("Total fitting points: " + totalPointsThatFit);
+	// 	double[][] result = new double[totalPointsThatFit + 1][2];
 
-		for(int j = 0; j < this.path.length - 1; ++j) {
-			double[][] vector = new double[][] {
-				{this.path[j + 1][0] - this.path[j][0], this.path[j + 1][1] - this.path[j][1]},
-			};
+	// 	for(int j = 0; j < this.path.length - 1; ++j) {
+	// 		double[][] vector = new double[][] {
+	// 			{this.path[j + 1][0] - this.path[j][0], this.path[j + 1][1] - this.path[j][1]},
+	// 		};
 
-			int pointsThatFit = (int) Math.ceil(Math.sqrt(vector[0][0] * vector[0][0] + vector[0][1] * vector[0][1]) / spacing);
+	// 		int pointsThatFit = (int) Math.ceil(Math.sqrt(vector[0][0] * vector[0][0] + vector[0][1] * vector[0][1]) / spacing);
 
-			double magnitude = Math.sqrt(vector[0][0] * vector[0][0] + vector[0][1] * vector[0][1]);
-			vector[0][0] /= magnitude;
-			vector[0][0] *= spacing;
-			// System.out.println("Vector x: " + vector[0][0]);
-			vector[0][1] /= magnitude;
-			vector[0][1] *= spacing;
-			// System.out.println("Vector y: " + vector[0][1]);
+	// 		double magnitude = Math.sqrt(vector[0][0] * vector[0][0] + vector[0][1] * vector[0][1]);
+	// 		vector[0][0] /= magnitude;
+	// 		vector[0][0] *= spacing;
+	// 		// System.out.println("Vector x: " + vector[0][0]);
+	// 		vector[0][1] /= magnitude;
+	// 		vector[0][1] *= spacing;
+	// 		// System.out.println("Vector y: " + vector[0][1]);
 
-			// System.out.println("Points that fit: " + pointsThatFit);
-			for(int k = 0; k < pointsThatFit; ++k) {
-				result[j * pointsThatFit + k][0] = this.path[j][0] + vector[0][0] * k;
-				result[j * pointsThatFit + k][1] = this.path[j][1] + vector[0][1] * k;
-				// System.out.println("Result " + temp + ": (" + result[j * pointsThatFit + k][0] + ", " + result[j * pointsThatFit + k][1] + ")");
-			}
-		}
+	// 		// System.out.println("Points that fit: " + pointsThatFit);
+	// 		for(int k = 0; k < pointsThatFit; ++k) {
+	// 			result[j * pointsThatFit + k][0] = this.path[j][0] + vector[0][0] * k;
+	// 			result[j * pointsThatFit + k][1] = this.path[j][1] + vector[0][1] * k;
+	// 			// System.out.println("Result " + temp + ": (" + result[j * pointsThatFit + k][0] + ", " + result[j * pointsThatFit + k][1] + ")");
+	// 		}
+	// 	}
 
-		result[totalPointsThatFit][0] = this.path[this.path.length - 1][0];
-		result[totalPointsThatFit][1] = this.path[this.path.length - 1][1];
+	// 	result[totalPointsThatFit][0] = this.path[this.path.length - 1][0];
+	// 	result[totalPointsThatFit][1] = this.path[this.path.length - 1][1];
 
-		return result;
-	}
-    /**
-	 * <i>This method is by Team FRC 2168.</i>
-	 * 
-	 * Optimization algorithm, which optimizes the data points in path to create a smooth trajectory.
-	 * This optimization uses gradient descent. While unlikely, it is possible for this algorithm to never
-	 * converge. If this happens, try increasing the tolerance level.
-	 * 
-	 * BigO: N^x, where X is the number of of times the while loop iterates before tolerance is met. 
-	 * 
-	 * @param path The path.
-	 * @param weight_data A value, usually between 0.8 and 0.99.
-	 * @param weight_smooth 1 - {@code weight_data}.
-	 * @param tolerance This is 0.001, but change as you wish.
-	 * @return A smoothed path.
-	 */
-	public double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance) {
+	// 	return result;
+	// }
+    // /**
+	//  * <i>This method is by Team FRC 2168.</i>
+	//  * 
+	//  * Optimization algorithm, which optimizes the data points in path to create a smooth trajectory.
+	//  * This optimization uses gradient descent. While unlikely, it is possible for this algorithm to never
+	//  * converge. If this happens, try increasing the tolerance level.
+	//  * 
+	//  * BigO: N^x, where X is the number of of times the while loop iterates before tolerance is met. 
+	//  * 
+	//  * @param path The path.
+	//  * @param weight_data A value, usually between 0.8 and 0.99.
+	//  * @param weight_smooth 1 - {@code weight_data}.
+	//  * @param tolerance This is 0.001, but change as you wish.
+	//  * @return A smoothed path.
+	//  */
+	// public double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance) {
         
-        //copy array
-		double[][] newPath = doubleArrayCopy(path);
+    //     //copy array
+	// 	double[][] newPath = doubleArrayCopy(path);
 
-		double change = tolerance;
-		while(change >= tolerance)
-		{
-			change = 0.0;
-			for(int i=1; i<path.length-1; i++)
-				for(int j=0; j<path[i].length; j++)
-				{
-					double aux = newPath[i][j];
-					newPath[i][j] += weight_data * (path[i][j] - newPath[i][j]) + weight_smooth * (newPath[i-1][j] + newPath[i+1][j] - (2.0 * newPath[i][j]));
-					change += Math.abs(aux - newPath[i][j]);	
-				}					
-		}
+	// 	double change = tolerance;
+	// 	while(change >= tolerance)
+	// 	{
+	// 		change = 0.0;
+	// 		for(int i=1; i<path.length-1; i++)
+	// 			for(int j=0; j<path[i].length; j++)
+	// 			{
+	// 				double aux = newPath[i][j];
+	// 				newPath[i][j] += weight_data * (path[i][j] - newPath[i][j]) + weight_smooth * (newPath[i-1][j] + newPath[i+1][j] - (2.0 * newPath[i][j]));
+	// 				change += Math.abs(aux - newPath[i][j]);	
+	// 			}					
+	// 	}
 
-		return newPath;
-    }
+	// 	return newPath;
+    // }
 
-	/**
-	 * <i>This method is by FRC Team 2168.</i>
-	 * 
-	 * Performs a deep copy of a 2 Dimensional Array looping thorough each element in the 2D array
-	 * 
-	 * BigO: Order N x M
-	 * @param arr
-	 * @return A copied array.
-	 */
-	public static double[][] doubleArrayCopy(double[][] arr) {
+	// /**
+	//  * <i>This method is by FRC Team 2168.</i>
+	//  * 
+	//  * Performs a deep copy of a 2 Dimensional Array looping thorough each element in the 2D array
+	//  * 
+	//  * BigO: Order N x M
+	//  * @param arr
+	//  * @return A copied array.
+	//  */
+	// public static double[][] doubleArrayCopy(double[][] arr) {
 
-		//size first dimension of array
-		double[][] temp = new double[arr.length][arr[0].length];
+	// 	//size first dimension of array
+	// 	double[][] temp = new double[arr.length][arr[0].length];
 
-		for(int i=0; i<arr.length; i++)
-		{
-			//Resize second dimension of array
-			temp[i] = new double[arr[i].length];
+	// 	for(int i=0; i<arr.length; i++)
+	// 	{
+	// 		//Resize second dimension of array
+	// 		temp[i] = new double[arr[i].length];
 
-			//Copy Contents
-			for(int j=0; j<arr[i].length; j++)
-				temp[i][j] = arr[i][j];
-		}
+	// 		//Copy Contents
+	// 		for(int j=0; j<arr[i].length; j++)
+	// 			temp[i][j] = arr[i][j];
+	// 	}
 
-		return temp;
-		}
+	// 	return temp;
+	// 	}
 		
 		/**
 		 * Distance formula, given two points (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>).
@@ -610,5 +617,12 @@ public class PathGenerator {
         double temp = array[x][0];
         array[x][0] = array[y][0];
         array[y][0] = temp;
-    }
+	}
+	
+	/**
+	 * @return The path.
+	 */
+	public double[][] getPath() {
+		return this.path;
+	}
 }
