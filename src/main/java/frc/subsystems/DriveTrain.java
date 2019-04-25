@@ -29,6 +29,7 @@ public class DriveTrain extends Subsystem {
     private DifferentialDrive driveTrain;
 
     private boolean reverse;
+    private double slowTurn;
 
     /**
      * Constructs a new {@code DriveTrain} object.
@@ -48,6 +49,7 @@ public class DriveTrain extends Subsystem {
         driveTrain = new DifferentialDrive(flDrive, frDrive);
 
         reverse = false;
+        slowTurn = 1;
     }
 
     @Override
@@ -70,8 +72,19 @@ public class DriveTrain extends Subsystem {
      * @param z Rate of rotation, from -1 to 1.
      */
     public void drive(double x, double z) {
-        if(!reverse) driveTrain.arcadeDrive(x, z);
+        if(!reverse) driveTrain.arcadeDrive(x, z * slowTurn);
         else driveTrain.arcadeDrive(-x, z);
+    }
+    // toggles the slowturn
+    public void slowTurntoggle() {
+    if(slowTurn == 1)
+    {
+        slowTurn = RobotMap.DRIVE_SLOWTURN_FACTOR;   
+    }
+    else
+    {
+        slowturn = 1;    
+    }
     }
 
     /**
