@@ -73,7 +73,7 @@ public class DriveTrain extends Subsystem {
      */
     public void drive(double x, double z) {
         if(!reverse) driveTrain.arcadeDrive(x, z * slowTurn);
-        else driveTrain.arcadeDrive(-x, z);
+        else driveTrain.arcadeDrive(-x, z * slowTurn);
     }
     // toggles the slowturn
     public void slowTurntoggle() {
