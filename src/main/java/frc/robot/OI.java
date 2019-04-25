@@ -19,6 +19,8 @@ public class OI {
     }
 
     // Drivetrain
+    driveController.aButton.whenPressed(new SlowTurnCommand());
+    
     public double getDriveForwardSpeed() {
         return applyDeadband(driveController.getForwardSpeed());
     }
