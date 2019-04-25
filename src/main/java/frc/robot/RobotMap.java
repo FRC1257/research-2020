@@ -17,6 +17,7 @@ public class RobotMap {
     public static final int DRIVE_FR_MOTOR_ID = 1;
     public static final int DRIVE_BL_MOTOR_ID = 2;
     public static final int DRIVE_BR_MOTOR_ID = 3;
+    public static final double DRIVE_SLOWTURN_FACTOR = 0.5;
 
     // Drivetrain PID
     public static double[] DRIVE_PIDF_LEFT = {1.0, 0.0, 0.0, 0.0};
