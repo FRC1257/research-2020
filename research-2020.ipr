@@ -16,15 +16,14 @@
       <module name="research-2020.test" target="11" />
     </bytecodeTargetLevel>
   </component>
-  <component name="CopyrightManager" default="">
-    <module2copyright />
-  </component>
+  <component name="CopyrightManager" default="" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="disableWrapperSourceDistributionNotification" value="true" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
@@ -166,10 +165,12 @@
     <library name="Gradle: edu.wpi.first.thirdparty.frc2019.opencv:opencv-java:3.4.4-4">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../../../../Public/frc2019/maven/edu/wpi/first/thirdparty/frc2019/opencv/opencv-java/3.4.4-4/opencv-java-3.4.4-4.jar!/" />
+        <root url="jar://$USER_HOME$/frc2019/maven/edu/wpi/first/thirdparty/frc2019/opencv/opencv-java/3.4.4-4/opencv-java-3.4.4-4.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/../../../../../Public/frc2019/maven/edu/wpi/first/thirdparty/frc2019/opencv/opencv-java/3.4.4-4/opencv-java-3.4.4-4-sources.jar!/" />
+        <root url="jar://$USER_HOME$/frc2019/maven/edu/wpi/first/thirdparty/frc2019/opencv/opencv-java/3.4.4-4/opencv-java-3.4.4-4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2019.4.1">
@@ -188,6 +189,33 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpiutil/wpiutil-java/2019.4.1/9b52975ba2540ee79b4ef0d2657104867e8e61d0/wpiutil-java-2019.4.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: jaci.jniloader:JNILoader:1.0.1">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.jniloader/JNILoader/1.0.1/cda8f6f8880538cb168c9d6cf62e2d96c01ee7b5/JNILoader-1.0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.jniloader/JNILoader/1.0.1/43472fb5bec68edf76f499d3ba49b7746465885a/JNILoader-1.0.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: jaci.pathfinder:Pathfinder-FRCSupport:2019.3.06-UNSTABLE">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-FRCSupport/2019.3.06-UNSTABLE/56f04b56fb9c36e6649342cbf2ebe497aabfe452/Pathfinder-FRCSupport-2019.3.06-UNSTABLE.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-FRCSupport/2019.3.06-UNSTABLE/b1c142b0d0554f855eae887b1b0a25b55b90ec8/Pathfinder-FRCSupport-2019.3.06-UNSTABLE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: jaci.pathfinder:Pathfinder-Java:2019.3.06-UNSTABLE">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/2019.3.06-UNSTABLE/b932855ea9a4ff6bacdee08018108bca0a3acf1d/Pathfinder-Java-2019.3.06-UNSTABLE.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/2019.3.06-UNSTABLE/c24dd72a2a9c5a8b5f05560e136efc9316e1daac/Pathfinder-Java-2019.3.06-UNSTABLE-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: junit:junit:4.12">

@@ -162,6 +162,13 @@ public class Drivetrain extends Subsystem {
         return frDrive.getEncoder().getPosition();
     }
 
+    public int getLeftEncoderTicks(int ticksPerRev) {
+        return (int) Math.round(getLeftEncoderPosition() * ticksPerRev);
+    }
+    public int getRightEncoderTicks(int ticksPerRev) {
+        return (int) Math.round(getRightEncoderPosition() * ticksPerRev);
+    }
+
     private void setConstantTuning() {
         
     }
