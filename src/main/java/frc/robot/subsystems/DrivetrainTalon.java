@@ -1,18 +1,22 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.RobotMap;
-import frc.robot.commands.drivetrain.DriveCommand;
-import frc.robot.util.Gyro;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.util.*;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
 
 public class DrivetrainTalon extends Subsystem {
 
@@ -24,6 +28,9 @@ public class DrivetrainTalon extends Subsystem {
     private DifferentialDrive drivetrain;
     private Gyro gyro;
 
+    private EncoderFollower leftFollower;
+    private EncoderFollower rightFollower;
+
     private double driveSpeed;
     private double turnSpeed;
     private double leftSpeed;
@@ -31,7 +38,7 @@ public class DrivetrainTalon extends Subsystem {
     private boolean reversed;
 
     public enum State {
-        DRIVER, TANK_DRIVE
+        DRIVER, TANK_DRIVE, PATH
     }
     private State state = State.DRIVER;
 
@@ -59,13 +66,15 @@ public class DrivetrainTalon extends Subsystem {
         blDrive.follow(flDrive);
         brDrive.follow(frDrive);
 
-        flDrive.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        frDrive.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        flDrive.configSelectedFeedbackCoefficient(RobotMap.DRIVE_CONV_FACTOR);
-        frDrive.configSelectedFeedbackCoefficient(RobotMap.DRIVE_CONV_FACTOR);
-
         drivetrain = new DifferentialDrive(flDrive, frDrive);
         gyro = Gyro.getInstance();
+
+        leftFollower = new EncoderFollower();
+        rightFollower = new EncoderFollower();
+        leftFollower.configurePIDVA(RobotMap.DRIVE_LEFT_PIDVA[0], RobotMap.DRIVE_LEFT_PIDVA[1],
+                RobotMap.DRIVE_LEFT_PIDVA[2], RobotMap.DRIVE_LEFT_PIDVA[3], RobotMap.DRIVE_LEFT_PIDVA[4]);
+        rightFollower.configurePIDVA(RobotMap.DRIVE_RIGHT_PIDVA[0], RobotMap.DRIVE_RIGHT_PIDVA[1],
+                RobotMap.DRIVE_RIGHT_PIDVA[2], RobotMap.DRIVE_RIGHT_PIDVA[3], RobotMap.DRIVE_RIGHT_PIDVA[4]);
 
         driveSpeed = 0;
         turnSpeed = 0;
@@ -88,6 +97,11 @@ public class DrivetrainTalon extends Subsystem {
         blDrive.set(0);
         brDrive.set(0);
 
+        leftFollower.reset();
+        leftFollower.configureEncoder(0, RobotMap.DRIVE_TALON_TICKS, RobotMap.DRIVE_WHEEL_DIAMETER);
+        rightFollower.reset();
+        rightFollower.configureEncoder(0, RobotMap.DRIVE_TALON_TICKS, RobotMap.DRIVE_WHEEL_DIAMETER);
+
         resetSensors();
 
         reversed = false;
@@ -95,8 +109,8 @@ public class DrivetrainTalon extends Subsystem {
     }
 
     private void resetSensors() {
-        frDrive.setSelectedSensorPosition(0);
         flDrive.setSelectedSensorPosition(0);
+        frDrive.setSelectedSensorPosition(0);
 
         gyro.zeroRobotAngle();
     }
@@ -105,10 +119,18 @@ public class DrivetrainTalon extends Subsystem {
         switch(state) {
             case DRIVER:
                 drivetrain.arcadeDrive(driveSpeed, turnSpeed);
-            break;
+                break;
             case TANK_DRIVE:
                 drivetrain.tankDrive(leftSpeed, rightSpeed);
-            break;
+                break;
+            case PATH:
+                double outputL = leftFollower.calculate(getLeftEncoderPosition());
+                double outputR = rightFollower.calculate(getRightEncoderPosition());
+                double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
+                double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyro.getRobotAngle());
+                double turn = RobotMap.DRIVE_HEADING_P * angleDifference;
+                drivetrain.tankDrive(outputL + turn, outputR - turn);
+                break;
         }
 
         driveSpeed = 0;
@@ -118,6 +140,12 @@ public class DrivetrainTalon extends Subsystem {
 
         SmartDashboard.putString("Drive State", state.name());
         SmartDashboard.putBoolean("Drive Reversed", reversed);
+
+        SmartDashboard.putNumber("Drive FL Position", getLeftEncoderPosition());
+        SmartDashboard.putNumber("Drive FR Position", getRightEncoderPosition());
+
+        SmartDashboard.putNumber("Drive FL Velocity", getLeftEncoderVelocity());
+        SmartDashboard.putNumber("Drive FR Velocity", getRightEncoderVelocity());
 
         SmartDashboard.putNumber("Drive FL Current", flDrive.getOutputCurrent());
         SmartDashboard.putNumber("Drive FR Current", frDrive.getOutputCurrent());
@@ -146,20 +174,53 @@ public class DrivetrainTalon extends Subsystem {
         state = State.TANK_DRIVE;
     }
 
-    public double getLeftEncoderPosition() {
+    public void runPath(Trajectory left, Trajectory right) {
+        leftFollower.setTrajectory(left);
+        rightFollower.setTrajectory(right);
+
+        resetSensors();
+
+        state = State.PATH;
+    }
+
+    public void stopPath() {
+        leftFollower = null;
+        rightFollower = null;
+
+        driveSpeed = 0;
+        turnSpeed = 0;
+        leftSpeed = 0;
+        rightSpeed = 0;
+
+        state = State.DRIVER;
+    }
+
+    public boolean isPathFinished() {
+        return leftFollower.isFinished() || rightFollower.isFinished(); // TODO decide between || and &&
+    }
+
+    public int getLeftEncoderPosition() {
         return flDrive.getSelectedSensorPosition();
     }
 
-    public double getRightEncoderPosition() {
+    public int getRightEncoderPosition() {
         return frDrive.getSelectedSensorPosition();
     }
 
+    public double getLeftEncoderVelocity() {
+        return flDrive.getSelectedSensorVelocity();
+    }
+
+    public double getRightEncoderVelocity() {
+        return frDrive.getSelectedSensorVelocity();
+    }
+
     private void setConstantTuning() {
-        
+
     }
 
     public void getConstantTuning() {
-        
+
     }
 
     public State getState() {

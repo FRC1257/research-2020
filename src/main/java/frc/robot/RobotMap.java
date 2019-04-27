@@ -27,6 +27,10 @@ public class RobotMap {
     public static final double DRIVE_TURN_MAX_SPEED = 0.8;
 
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; // inches
-    public static final double DRIVE_CONV_FACTOR = Math.PI * DRIVE_WHEEL_DIAMETER; // rev to inches
-    public static final double DRIVE_CONV_FACTOR_TALON = 1.0 / 4096.0 * Math.PI * DRIVE_WHEEL_DIAMETER; // pulses to inches
+    public static final double DRIVE_WHEEL_DIAMETER_M = 0.1524; // meters
+    public static final int DRIVE_PATH_TICKS = 1000;
+    public static final int DRIVE_TALON_TICKS = 4096;
+    public static final double[] DRIVE_LEFT_PIDVA = {1.0, 0.0, 0.0, 1 / 1.7, 0};
+    public static final double[] DRIVE_RIGHT_PIDVA = {1.0, 0.0, 0.0, 1 / 1.7, 0};
+    public static final double DRIVE_HEADING_P = 0.01;
 }
