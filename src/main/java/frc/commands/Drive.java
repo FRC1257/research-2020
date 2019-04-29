@@ -8,12 +8,14 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+import frc.robot.OI;
 import frc.robot.Robot;
 
 public class Drive extends Command {
   public Drive() {
-    requires(Robot.driveTrain);
+    drivetrain = Robot.drivetrain;
+    oi = Robot.oi;
+    requires(Robot.drivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -24,7 +26,12 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.drive(Robot.oi.getDriveForwardSpeed(), Robot.oi.getDriveTurnSpeed());
+    if(drivetrain.state == drivetrain.State.Driver){
+        drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveTurnSpeed());
+        }
+        if(drivetrain.state == drivetrain.State.Cheesy){
+        drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveCurvature());
+        }
   }
 
   // Make this return true when this Command no longer needs to run execute()
