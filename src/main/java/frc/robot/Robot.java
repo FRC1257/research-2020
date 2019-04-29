@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends TimedRobot {
 	
-	public static DriveTrain driveTrain;
+	public static Drivetrain drivetrain;
 	public static OI oi;
 
 	/**
@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		driveTrain = DriveTrain.getInstance();
+		drivetrain = Drivetrain.getInstance();
 		oi = OI.getInstance();
 	}
 
