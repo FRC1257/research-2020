@@ -3,7 +3,7 @@ package main.java.frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  toggle slowturn option
@@ -11,18 +11,18 @@ import frc.robot.subsystems.Drivetrain;
 
 public class SlowTurnCommand extends InstantCommand {
 
-    private Drivetrain drivetrain;
+    private DriveTrain driveTrain;
 
     public SlowTurnCommand() {
         super();
         
-        drivetrain = Robot.drivetrain;
-        requires(drivetrain);
+        driveTrain = Robot.driveTrain;
+        requires(driveTrain);
     }
 
     @Override
     public void initialize() {
-        drivetrain.slowTurntoggle();
+        driveTrain.slowTurntoggle();
     }
 
     @Override
