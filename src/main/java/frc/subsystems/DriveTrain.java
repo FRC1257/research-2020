@@ -29,6 +29,12 @@ public class DriveTrain extends Subsystem {
     private DifferentialDrive driveTrain;
 
     private boolean reverse;
+    private boolean isQuickTurn;
+    
+    public enum State {
+    Driver, Cheesy
+    }
+    private State state = State.Driver;
 
     /**
      * Constructs a new {@code DriveTrain} object.
@@ -44,6 +50,8 @@ public class DriveTrain extends Subsystem {
 
         blDrive.follow(flDrive);
         brDrive.follow(frDrive);
+        
+        
 
         driveTrain = new DifferentialDrive(flDrive, frDrive);
 
@@ -69,9 +77,53 @@ public class DriveTrain extends Subsystem {
      * @param x Forward speed, from -1 to 1.
      * @param z Rate of rotation, from -1 to 1.
      */
+    
+    
+    
+    public void update(double deltaT) {
+        switch(state) {
+            case DRIVER:
+                drivetrain.arcadeDrive(driveSpeed, turnSpeed);
+            break;
+            case PID_TURN:
+                drivetrain.arcadeDrive(0, pidController.calculate(gyro.getRobotAngle(), deltaT));
+
+                double error = Math.abs(gyro.getRobotAngle() - pidController.getSetpoint());
+                if(error < DRIVE_TURN_PID_TOLERANCE) {
+                    state = State.DRIVER;
+                }
+                break;
+            case CHEESY:
+                drivetrain.curvatureDrive(drivespeed, turnspeed, isQuickTurn);
+                break;
+        }
+       
     public void drive(double x, double z) {
-        if(!reverse) driveTrain.arcadeDrive(x, z);
-        else driveTrain.arcadeDrive(-x, z);
+        if(!reverse){
+         driveSpeed = x;
+         turnSpeed  = z;
+        }   
+        else 
+        {
+         driveSpeed = -x;
+         turnSpeed  = z ;  
+        }
+        
+    }
+        
+    public void cheesyToggle() {
+    if(state == State.DRIVER)
+    {
+        state = State.CHEESY;
+    }
+    else if(state == State.CHEESY)
+    {
+        state = State.DRIVER;
+    }
+    }
+
+    public void quickTurnToggle(){
+        isQuickTurn = !isQuickTurn;
     }
 
     /**
