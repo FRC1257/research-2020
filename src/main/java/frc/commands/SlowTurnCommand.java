@@ -1,4 +1,4 @@
-package main.java.frc.robot.commands.drivetrain;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
