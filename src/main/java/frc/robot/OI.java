@@ -19,6 +19,10 @@ public class OI {
     }
 
     // Drivetrain
+    
+    driveController.abutton.whenPressed(new CheesyDriveCommand());
+    driveController.ybutton.whenPressed(new QuickTurnCommand());
+    
     public double getDriveForwardSpeed() {
         return applyDeadband(driveController.getForwardSpeed());
     }
@@ -26,7 +30,11 @@ public class OI {
     public double getDriveTurnSpeed() {
         return applyDeadband(driveController.getTurnSpeed());
     }
-
+    
+    public double getDriveCurvature() {
+        return driveController.getY(Hand.kRight);  
+    }
+    
     public boolean getDriveToggleReverse() {
         return driveController.getBButtonPressed();
     }
