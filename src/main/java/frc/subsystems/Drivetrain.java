@@ -17,9 +17,9 @@ import frc.commands.Drive;
  * @author Allen Du
  * @since 2019-01-21
  */
-public class DriveTrain extends Subsystem {
+public class Drivetrain extends Subsystem {
 
-    private static DriveTrain instance = null;
+    private static Drivetrain instance = null;
 
     private FlakeMin flDrive;
     private FlakeMin frDrive;
@@ -40,9 +40,9 @@ public class DriveTrain extends Subsystem {
     private State state = State.DRIVER;
 
     /**
-     * Constructs a new {@code DriveTrain} object.
+     * Constructs a new {@code Drivetrain} object.
      */
-    private DriveTrain() {
+    private Drivetrain() {
 
         flDrive = new FlakeMin(RobotMap.DRIVE_FL_MOTOR_ID, MotorType.kBrushless, true);
         frDrive = new FlakeMin(RobotMap.DRIVE_FR_MOTOR_ID, MotorType.kBrushless, false);
@@ -228,9 +228,9 @@ public class DriveTrain extends Subsystem {
      * Singleton.
      * @return A Drivetrain object.
      */
-    public static DriveTrain getInstance() {
+    public static Drivetrain getInstance() {
         if(instance == null) {
-            instance = new DriveTrain();
+            instance = new Drivetrain();
         }
         return instance;
     }
