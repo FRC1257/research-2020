@@ -27,14 +27,17 @@ public class DriveTrain extends Subsystem {
     private CANSparkMax brDrive;
 
     private DifferentialDrive driveTrain;
+    
+    private double turnSpeed;
+    private double driveSpeed;
 
     private boolean reverse;
     private boolean isQuickTurn;
     
     public enum State {
-    Driver, Cheesy
+    DRIVER, CHEESY
     }
-    private State state = State.Driver;
+    private State state = State.DRIVER;
 
     /**
      * Constructs a new {@code DriveTrain} object.
@@ -51,8 +54,9 @@ public class DriveTrain extends Subsystem {
         blDrive.follow(flDrive);
         brDrive.follow(frDrive);
         
+        driveSpeed = 0;
+        turnSpeed = 0;
         
-
         driveTrain = new DifferentialDrive(flDrive, frDrive);
 
         reverse = false;
@@ -85,14 +89,6 @@ public class DriveTrain extends Subsystem {
             case DRIVER:
                 drivetrain.arcadeDrive(driveSpeed, turnSpeed);
             break;
-            case PID_TURN:
-                drivetrain.arcadeDrive(0, pidController.calculate(gyro.getRobotAngle(), deltaT));
-
-                double error = Math.abs(gyro.getRobotAngle() - pidController.getSetpoint());
-                if(error < DRIVE_TURN_PID_TOLERANCE) {
-                    state = State.DRIVER;
-                }
-                break;
             case CHEESY:
                 drivetrain.curvatureDrive(drivespeed, turnspeed, isQuickTurn);
                 break;
