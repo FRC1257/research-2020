@@ -127,8 +127,8 @@ public class DrivetrainTalon extends Subsystem {
                 double outputL = leftFollower.calculate(getLeftEncoderPosition());
                 double outputR = rightFollower.calculate(getRightEncoderPosition());
                 double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
-                double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyro.getRobotAngle());
-                double turn = RobotMap.DRIVE_HEADING_P * angleDifference;
+                double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading + gyro.getRobotAngle());
+                double turn = -RobotMap.DRIVE_HEADING_P * angleDifference;
                 drivetrain.tankDrive(outputL + turn, outputR - turn);
                 break;
         }
