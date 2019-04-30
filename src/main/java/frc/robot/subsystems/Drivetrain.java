@@ -131,8 +131,8 @@ public class Drivetrain extends Subsystem {
                 double outputL = leftFollower.calculate(getLeftEncoderTicks(RobotMap.DRIVE_PATH_TICKS));
                 double outputR = rightFollower.calculate(getRightEncoderTicks(RobotMap.DRIVE_PATH_TICKS));
                 double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
-                double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyro.getRobotAngle());
-                double turn = RobotMap.DRIVE_HEADING_P * angleDifference;
+                double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading + gyro.getRobotAngle());
+                double turn = -RobotMap.DRIVE_HEADING_P * angleDifference;
                 drivetrain.tankDrive(outputL + turn, outputR - turn);
                 break;
         }
