@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
     public enum State {
     DRIVER, CHEESY
     }
-    private State state = State.DRIVER;
+    public State state = State.DRIVER;
 
     /**
      * Constructs a new {@code Drivetrain} object.
