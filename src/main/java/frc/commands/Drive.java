@@ -26,10 +26,10 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(drivetrain.state == drivetrain.State.Driver){
+    if(drivetrain.getCheeseDrive() == false){
         drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveTurnSpeed());
         }
-        if(drivetrain.state == drivetrain.State.Cheesy){
+        if(drivetrain.getCheeseDrive == true){
         drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveCurvature());
         }
   }
