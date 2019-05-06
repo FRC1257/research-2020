@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.cargointake.cargoarm.*;
+import frc.commands*;
 
 /**
  * Subsystem to handle the arm controlling the cargo intake
