@@ -11,12 +11,31 @@ public class RobotMap {
     // Controllers
     public static final int DRIVE_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
-
+    
     // Drivetrain
-    public static final int DRIVE_FL_MOTOR_ID = 0;
-    public static final int DRIVE_FR_MOTOR_ID = 1;
-    public static final int DRIVE_BL_MOTOR_ID = 2;
-    public static final int DRIVE_BR_MOTOR_ID = 3;
+    public static final int DRIVE_FRONT_LEFT_ID = 4;
+    public static final int DRIVE_FRONT_RIGHT_ID = 3;
+    public static final int DRIVE_BACK_LEFT_ID = 2;
+    public static final int DRIVE_BACK_RIGHT_ID = 1;
+    public static final double DRIVE_SLOWTURN_FACTOR = 0.5;
+
+    // Hatch Intake
+    public static final int HATCH_INTAKE_MOTOR_ID = 5;
+
+    // Cargo Arm
+    public static final int CARGO_ARM_MOTOR_ID = 6;
+    public static final int CARGO_ARM_LIMIT_SWITCH_ID = 1;
+
+    // Cargo Roller
+    public static final int CARGO_ROLLER_MOTOR_ID = 7;
+
+    // Climb
+    public static final int CLIMB_FRONT_MOTOR_ID = 9;
+    public static final int CLIMB_BACK_MOTOR_ID = 8;
+    public static final int CLIMB_FRONT_SOLENOID_FORWARD_ID = 0;
+    public static final int CLIMB_FRONT_SOLENOID_REVERSE_ID = 1;
+    public static final int CLIMB_BACK_SOLENOID_FORWARD_ID = 2;
+    public static final int CLIMB_BACK_SOLENOID_REVERSE_ID = 3;
 
     // Drivetrain PID
     public static double[] DRIVE_PIDF_LEFT = {1.0, 0.0, 0.0, 0.0};
