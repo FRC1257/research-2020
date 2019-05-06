@@ -1,13 +1,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.subsystems.DriveTrain;
+import frc.subsystems.*;
+import frc.robot.OI;
+import frc.commands.*;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends TimedRobot {
 	
-	public static DriveTrain driveTrain;
-	public static OI oi;
+	public static Drivetrain drivetrain;
+    public static Climb climb;
+    public static CargoArm cargoArm;
+    public static CargoRoller cargoRoller;
+    public static HatchIntake hatchIntake;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -15,7 +20,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		driveTrain = DriveTrain.getInstance();
+		drivetrain = new Drivetrain();
+        climb = new Climb();
+        cargoArm = new CargoArm();
+        cargoRoller = new CargoRoller();
+        hatchIntake = new HatchIntake();
 		oi = OI.getInstance();
 	}
 
