@@ -13,9 +13,12 @@ public class OI {
     public SnailController driveController;
     public SnailController operatorController;
 
-    private OI() {
+    OI() {
         driveController = new SnailController(RobotMap.DRIVE_CONTROLLER_PORT);
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
+
+        driveController.aButton.whenPressed(new Test());
+
     }
 
     // Drivetrain
@@ -44,6 +47,10 @@ public class OI {
             instance = new OI();
         }
         return instance;
+    }
+    
+    public boolean testProceed(){
+        return driveController.getAButtonPressed();
     }
 
     public double applyDeadband(double in) {
