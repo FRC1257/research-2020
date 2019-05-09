@@ -93,18 +93,8 @@ public class Drivetrain extends Subsystem {
                 drivetrain.curvatureDrive(drivespeed, turnspeed, isQuickTurn);
                 break;
         }
+    }
         
-   public boolean getCheeseDrive()
-    {
-     switch(state){
-        case DRIVER:
-            return false;
-            break;
-        case CHEESY :
-            return true;
-            break;
-     }
-   }
        
     public void drive(double x, double z) {
         if(!reverse){
