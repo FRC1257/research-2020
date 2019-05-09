@@ -31,8 +31,6 @@ public class OI {
         return applyDeadband(driveController.getTurnSpeed());
     }
     
-    public double getDriveCurvature() {
-        return driveController.getY(Hand.kRight);  
     }
     
     public boolean getDriveToggleReverse() {
