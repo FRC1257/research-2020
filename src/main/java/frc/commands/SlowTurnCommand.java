@@ -3,7 +3,7 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrain;
+import frc.subsystems.DriveTrain;
 
 /**
  toggle slowturn option
