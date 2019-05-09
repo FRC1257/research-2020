@@ -10,9 +10,15 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.Robot;
+import frc.subsystems.driveTrain;
+import frc.robot.OI;
 
 public class Drive extends Command {
+  private OI oi;
+  private DriveTrain driveTrain;
   public Drive() {
+    oi = Robot.oi;
+    drivetrain = Robot.driveTrain;
     requires(Robot.driveTrain);
   }
 
@@ -24,7 +30,7 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.drive(Robot.oi.getDriveForwardSpeed(), Robot.oi.getDriveTurnSpeed());
+    driveTrain.drive(oi.getDriveForwardSpeed(), oi.getDriveTurnSpeed());
   }
 
   // Make this return true when this Command no longer needs to run execute()
