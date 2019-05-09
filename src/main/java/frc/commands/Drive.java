@@ -26,12 +26,8 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(drivetrain.getCheeseDrive() == false){
-        drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveTurnSpeed());
-        }
-        if(drivetrain.getCheeseDrive == true){
-        drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveCurvature());
-        }
+  drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveTurnSpeed()); // when using Cheesy Drive, press either left or right bumpers
+      
   }
 
   // Make this return true when this Command no longer needs to run execute()
