@@ -19,7 +19,7 @@ public class Drive extends Command {
   public Drive() {
     oi = Robot.oi;
     drivetrain = Robot.driveTrain;
-    requires(Robot.driveTrain);
+    requires(driveTrain);
   }
 
   // Called just before this Command runs the first time
