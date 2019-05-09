@@ -34,13 +34,6 @@ public class OI {
         return driveController.getBButtonPressed();
     }
 
-    public boolean getDriveTestFL() {
-        return driveController.getXButton();
-    }
-
-    public boolean getDriveTestFR() {
-        return driveController.getYButton();
-    }
 
     public static OI getInstance() {
         if (instance == null) {
@@ -50,7 +43,7 @@ public class OI {
     }
     
     public boolean testProceed(){
-        return driveController.getAButtonPressed();
+        return driveController.getXButtonPressed();
     }
 
     public double applyDeadband(double in) {
