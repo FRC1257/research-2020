@@ -1,40 +1,41 @@
 package frc.commands;
-import frc.commands.*;
-import frc.subsystems.*;
-import frc.robot.Robot;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
 
 public class Test extends CommandGroup{
     
    
     public Test(){
        
-        AddSequential(new DriveCommand(0.5, 0) , 1);
-        AddSequential(new Progress());
-        AddSequential(new DriveCommand(-0.5, 0) , 1);
-        AddSequential(new Progress());
-        AddSequential(new TurnLeftCommand(), 1);
-        AddSequential(new Progress());
-        AddSequential(new TurnRightCommand(), 1);
-        AddSequential(new Progress());
-        AddSequential(new EjectCargoCommand(),1);
-        AddSequential(new Progress());
-        AddSequential(new IntakeCargoCommand(),1);
-        AddSequential(new Progress());
-        AddSequential(new AdvanceClimbCommand());
-        AddSequential(new Nothing(), 5);
-        AddSequential(new Progress());
-        AddSequential(new AdvanceClimbCommand()); // when this happens make sure that the robot doesnt die
-        AddSequential(new Nothing(), 5);
-        AddSequential(new Progress());
-        AddSequential(new AdvanceClimbCommand());
+        addSequential(new Drive(0.5, 0) , 1);
+        addSequential(new Progress());
+        addSequential(new Drive(-0.5, 0) , 1);
+        addSequential(new Progress());
+        addSequential(new TurnLeftCommand(), 1);
+        addSequential(new Progress());
+        addSequential(new TurnRightCommand(), 1);
+        addSequential(new Progress());
+        addSequential(new EjectCargoCommand(), 1);
+        addSequential(new Progress());
+        addSequential(new IntakeCargoCommand(), 1);
+        addSequential(new Progress());
+        addSequential(new AdvanceClimbCommand());
+        addSequential(new Nothing(), 5);
+        addSequential(new Progress());
+        addSequential(new AdvanceClimbCommand()); // when this happens make sure that the robot doesnt die
+        addSequential(new Nothing(), 5);
+        addSequential(new Progress());
+        addSequential(new AdvanceClimbCommand());
     }
-    public end(){
+    public void end() {
         
     }
-    public initialize(){
+    public void initialize() {
     
     }
-    public interrupted(){
+    public void interrupted() {
+        end();
 
     }
     public boolean isFinished(){
