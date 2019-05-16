@@ -20,6 +20,7 @@ public class OI {
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
 
         driveController.aButton.whenPressed(new Test());
+	driverController.bButton.whenPressed(Nothing.end());
 
 
 
@@ -46,9 +47,6 @@ public class OI {
         return instance;
     }
     
-    public boolean testProceed(){
-        return driveController.getXButtonPressed();
-    }
 
     public double applyDeadband(double in) {
         if(Math.abs(in) < RobotMap.NEO_DEADBAND) {
@@ -58,6 +56,6 @@ public class OI {
     }
 
 	public double getClimbDriveSpeed() {
-		return operatorController.getTriggerAxis(Hand.kLeft);
+		return operatorController.getRightStickY(Hand.kLeft);
 	}
 }
