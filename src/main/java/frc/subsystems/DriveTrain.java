@@ -83,7 +83,7 @@ public class DriveTrain extends Subsystem {
     }
     else
     {
-        slowturn = 1;    
+        slowTurn = 1;    
     }
     }
 
