@@ -3,16 +3,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.subsystems.*;
 import frc.robot.OI;
-import frc.commands.*;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.util.Gyro;
 
 public class Robot extends TimedRobot {
 	
 	public static Drivetrain drivetrain;
     public static Climb climb;
-    public static CargoArm cargoArm;
+    public static Gyro gyro;
     public static CargoRoller cargoRoller;
-    public static HatchIntake hatchIntake;
+	public static HatchIntake hatchIntake;
+	public static OI oi;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -22,10 +23,10 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drivetrain = new Drivetrain();
         climb = new Climb();
-        cargoArm = new CargoArm();
         cargoRoller = new CargoRoller();
         hatchIntake = new HatchIntake();
 		oi = OI.getInstance();
+		gyro = Gyro.getInstance();
 	}
 
 	/**
