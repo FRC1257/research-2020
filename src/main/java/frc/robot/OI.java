@@ -16,12 +16,14 @@ public class OI {
     private OI() {
         driveController = new SnailController(RobotMap.DRIVE_CONTROLLER_PORT);
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
+        
+        driveController.abutton.whenPressed(new CheesyDriveCommand());
+        driveController.ybutton.whenPressed(new QuickTurnCommand());
     }
 
     // Drivetrain
     
-    driveController.abutton.whenPressed(new CheesyDriveCommand());
-    driveController.ybutton.whenPressed(new QuickTurnCommand());
+    
     
     public double getDriveForwardSpeed() {
         return applyDeadband(driveController.getForwardSpeed());
