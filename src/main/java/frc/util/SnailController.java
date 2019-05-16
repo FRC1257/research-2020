@@ -22,8 +22,6 @@ public class SnailController extends Joystick {
     public JoystickButton startButton = new JoystickButton(this, 8);
     public JoystickButton leftStickButton = new JoystickButton(this, 9);
     public JoystickButton rightStickButton = new JoystickButton(this, 10);
-    public SnailControllerTrigger rightTrigger = new SnailControllerTrigger(this, true);
-    public SnailControllerTrigger leftTrigger = new SnailControllerTrigger(this, false);
 
     public SnailController(int port) {
         super(port);
