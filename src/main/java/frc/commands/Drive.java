@@ -3,8 +3,8 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.Robot;
-import frc.robot.OI;
 import frc.subsystems.Drivetrain;
+import frc.robot.OI;
 
 /**
  * Set the speed of the drivetrain with the values from the controller
@@ -12,26 +12,33 @@ import frc.subsystems.Drivetrain;
  * Default command of the Drivetrain subsystem
  */
 
-public class DriveCommand extends Command {
+public class Drive extends Command {
 
     private Drivetrain drivetrain;
+    private double turnSpeed;
+    private double driveSpeed;
     private OI oi;
 
-    public DriveCommand() {
+    public Drive(double d, double z) {
         drivetrain = Robot.drivetrain;
         oi = Robot.oi;
+        if(z!=0||d!=0){
+        turnSpeed = z;
+        driveSpeed = d;
+        }
+        else{
+        turnSpeed = oi.getDriveTurnSpeed();
+        driveSpeed = oi.getDriveForwardSpeed();
+        }
 
         requires(drivetrain);
     }
 
     @Override
     public void execute() {
-        if(drivetrain.getCheeseDrive() == false){
-        drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveTurnSpeed());
-        }
-        if(drivetrain.getCheeseDrive == true){
-        drivetrain.drive(oi.getDriveForwardSpeed(), oi.getDriveCurvature());
-        }
+      
+      drivetrain.drive(driveSpeed , turnSpeed);
+        
     }
 
     @Override
@@ -49,4 +56,3 @@ public class DriveCommand extends Command {
         end();
     }
 }
-
