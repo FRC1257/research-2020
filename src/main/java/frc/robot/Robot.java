@@ -59,6 +59,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		climb.update();
+		drivetrain.update();
+		cargoRoller.update();
+		hatchIntake.update();
 	}
 
 	/**
