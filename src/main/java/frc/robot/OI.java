@@ -35,9 +35,7 @@ public class OI {
     
     
     
-    public boolean getDriveToggleReverse() {
-        return driveController.getBButtonPressed();
-    }
+    
 
     public boolean getDriveTestFL() {
         return driveController.getXButton();
