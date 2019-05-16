@@ -10,7 +10,7 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.Robot;
-import frc.subsystems.driveTrain;
+import frc.subsystems.DriveTrain;
 import frc.robot.OI;
 
 public class Drive extends Command {
@@ -18,7 +18,7 @@ public class Drive extends Command {
   private DriveTrain driveTrain;
   public Drive() {
     oi = Robot.oi;
-    drivetrain = Robot.driveTrain;
+    driveTrain = Robot.driveTrain;
     requires(driveTrain);
   }
 
@@ -50,3 +50,4 @@ public class Drive extends Command {
   protected void interrupted() {
   }
 }
+
