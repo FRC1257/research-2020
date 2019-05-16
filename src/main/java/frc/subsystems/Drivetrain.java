@@ -3,6 +3,7 @@ package frc.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.util.Gyro;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -26,6 +27,8 @@ public class Drivetrain extends Subsystem {
     
     public static final double DRIVE_FORWARD_MAX_SPEED = 1.0; // percentage
     public static final double DRIVE_TURN_MAX_SPEED = 0.8; // percentage
+
+    private Gyro gyro;
     
     public static double[] DRIVE_TURN_PIDF = { 0.01, 0.0, 0.0, 0.0 };
     public static double DRIVE_TURN_PID_TOLERANCE = 3.0; // degrees
@@ -57,6 +60,8 @@ public class Drivetrain extends Subsystem {
     private State state = State.DRIVER;
 
     public Drivetrain() {
+
+        gyro = Robot.gyro;
 
         
 
@@ -93,7 +98,6 @@ public class Drivetrain extends Subsystem {
         driveSpeed = 0;
         turnSpeed = 0;
         reversed = false;
-        slowTurn = 1;
 
         setConstantTuning();
         reset();
@@ -105,7 +109,7 @@ public class Drivetrain extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new DriveCommand());
+        setDefaultCommand(new Drive(0,0));
     }
 
     private void reset() {
@@ -113,10 +117,6 @@ public class Drivetrain extends Subsystem {
         frDrive.set(0);
         blDrive.set(0);
         brDrive.set(0);
-        m_left_follower.reset();
-        m_left_follower.configureEncoder(m_left_encoder.get(), k_ticks_per_rev, k_wheel_diameter);
-        m_right_follower.reset();
-        m_right_follower.configureEncoder(m_right_encoder.get(), k_ticks_per_rev, k_wheel_diameter);
         reversed = false;
         state = State.DRIVER;
     }
@@ -164,11 +164,11 @@ public class Drivetrain extends Subsystem {
     public void drive(double x, double z) {
         if(reversed) {
             driveSpeed = -x * DRIVE_FORWARD_MAX_SPEED;
-            turnSpeed = z * DRIVE_TURN_MAX_SPEED*slowTurnfactor;
+            turnSpeed = z * DRIVE_TURN_MAX_SPEED;
         }
         else {
             driveSpeed = x * DRIVE_FORWARD_MAX_SPEED;
-            turnSpeed = z * DRIVE_TURN_MAX_SPEED*slowTurnfactor;
+            turnSpeed = z * DRIVE_TURN_MAX_SPEED;
         }
         if(driveSpeed != 0.0 || turnSpeed != 0.0) {
             state = State.DRIVER;
