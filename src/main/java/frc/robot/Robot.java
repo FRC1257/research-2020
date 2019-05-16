@@ -15,6 +15,7 @@ public class Robot extends TimedRobot {
 	public static HatchIntake hatchIntake;
 	public static OI oi;
 	private double lastTimeStamp;
+	public static CargoRoller cargoRoller;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -27,7 +28,7 @@ public class Robot extends TimedRobot {
         	hatchIntake = new HatchIntake();
 		oi = OI.getInstance();
 		gyro = Gyro.getInstance();
-		
+		cargoRoller = new CargoRoller();
 		lastTimeStamp = Timer.getFPGATimestamp();
 	}
 
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
 		climb.update();
 		drivetrain.update(Timer.getFPGATimeStamp - lastTimeStamp);
 		hatchIntake.update();
+		cargoRoller.update();
 	}
 
 	/**
