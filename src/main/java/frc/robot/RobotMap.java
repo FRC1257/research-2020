@@ -11,6 +11,8 @@ public class RobotMap {
     // Controllers
     public static final int DRIVE_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
+
+    public static final int PCM_SECONDARY_ID = 1;
     
     // Drivetrain
     public static final int DRIVE_FRONT_LEFT_ID = 4;
@@ -55,4 +57,10 @@ public class RobotMap {
 
     // For ConsolePrinter
     public static final boolean PRINT_SD_DEBUG_DATA = true;
+
+
+    /// Controller
+	public static final double CONTROLLER_DEADBAND = 0;
+	public static final int CONTROLLER_POV = 0;
+	public static final int NEO_CURRENT_LIMIT = 0;
 }
