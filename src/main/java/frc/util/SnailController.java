@@ -1,111 +1,111 @@
 package frc.util;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-// Xbox controller optimized for our drive team.
+/**
+ * Xbox controller for command based programming
+ * Credit to FRC Team 319 for the original code
+ */
 
-public class SnailController extends XboxController {
+public class SnailController extends Joystick {
 
-	private int prevDirection;
+    public static final double CONTROLLER_DEADBAND = 0.08; // deadband for joysticks
 
-	public SnailController(int port) {
-		super(port);
-		prevDirection = -1;
-	}
+    public JoystickButton aButton = new JoystickButton(this, 1);
+    public JoystickButton bButton = new JoystickButton(this, 2);
+    public JoystickButton xButton = new JoystickButton(this, 3);
+    public JoystickButton yButton = new JoystickButton(this, 4);
+    public JoystickButton leftBumper = new JoystickButton(this, 5);
+    public JoystickButton rightBumper = new JoystickButton(this, 6);
+    public JoystickButton selectButton = new JoystickButton(this, 7);
+    public JoystickButton startButton = new JoystickButton(this, 8);
+    public JoystickButton leftStickButton = new JoystickButton(this, 9);
+    public JoystickButton rightStickButton = new JoystickButton(this, 10);
+    public SnailControllerTrigger rightTrigger = new SnailControllerTrigger(this, true);
+    public SnailControllerTrigger leftTrigger = new SnailControllerTrigger(this, false);
 
-	@Override
-	public double getY(Hand hand) {
-		return applyDeadband(-super.getY(hand));
-	}
+    public SnailController(int port) {
+        super(port);
+    }
 
-	@Override
-	public double getX(Hand hand) {
-		return applyDeadband(super.getX(hand));
-	}
+    public double getLeftStickX() {
+        return applyDeadband(getRawAxis(0));
+    }
+    public double getLeftStickY() {
+        return applyDeadband(-getRawAxis(1));
+    }
+    public double getRightStickX() {
+        return applyDeadband(getRawAxis(4));
+    }
+    public double getRightStickY() {
+        return applyDeadband(-getRawAxis(5));
+    }
 
-	/*
-	 * Controls: If they press A, use single stick arcade with the left joystick
-	 * 
-	 * If they press the left bumper, use the left joystick for forward and backward
-	 * motion and the right joystick for turning
-	 * 
-	 * If they press the right bumper, use the right joystick for forward and
-	 * backward motion and the left joystick for turning
-	 */
+    public double getLeftTrigger() {
+        return applyDeadband(getRawAxis(2));
+    }
+    public double getRightTrigger() {
+        return applyDeadband(-getRawAxis(3));
+    }
 
-	public double getForwardSpeed() {
-		if (getAButton())
-			return getY(Hand.kLeft);
-		else if (getBumper(Hand.kLeft))
-			return getY(Hand.kLeft);
-		else if (getBumper(Hand.kRight))
-			return getY(Hand.kRight);
-		else
-			return 0;
-	}
+    /*
+     * Controls: If they press A, use single stick arcade with the left joystick
+     *
+     * If they press the left bumper, use the left joystick for forward and backward
+     * motion and the right joystick for turning
+     *
+     * If they press the right bumper, use the right joystick for forward and
+     * backward motion and the left joystick for turning
+     */
 
-	public double getTurnSpeed() {
-		if (getAButton())
-			return getX(Hand.kLeft);
-		else if (getBumper(Hand.kLeft))
-			return getX(Hand.kRight);
-		else if (getBumper(Hand.kRight))
-			return getX(Hand.kLeft);
-		else
-			return 0;
-	}
+    public double getForwardSpeed() {
+        if (aButton.get())
+            return getLeftStickY();
+        else if (leftBumper.get())
+            return getLeftStickY();
+        else if (rightBumper.get())
+            return getRightStickY();
+        else
+            return 0;
+    }
 
-	public double applyDeadband(double number) {
-		if (Math.abs(number) < RobotMap.CONTROLLER_DEADBAND) {
-			return 0;
-		}
-		return number;
-	}
+    public double getTurnSpeed() {
+        if (aButton.get())
+            return getLeftStickX();
+        else if (leftBumper.get())
+            return getRightStickX();
+        else if (rightBumper.get())
+            return getLeftStickX();
+        else
+            return 0;
+    }
 
-	public static double squareInput(double number) {
-		// Use abs to prevent the sign from being cancelled out
-		return Math.abs(number) * number;
-	}
+    /**
+     * Deadbands a number and returns the result
+     * If |number| < deadband, then the function will return 0
+     * Otherwise, it will return the number
+     *
+     * @param number the number to deadband
+     *
+     * @return deadbanded number
+     */
+    public static double applyDeadband(double number) {
+        if (Math.abs(number) < CONTROLLER_DEADBAND) {
+            return 0;
+        }
+        return number;
+    }
 
-	public boolean getDPadUp() {
-		return getPOV(RobotMap.CONTROLLER_POV) == 0;
-	}
-
-	public boolean getDPadRight() {
-		return getPOV(RobotMap.CONTROLLER_POV) == 90;
-	}
-
-	public boolean getDPadDown() {
-		return getPOV(RobotMap.CONTROLLER_POV) == 180;
-	}
-
-	public boolean getDPadLeft() {
-		return getPOV(RobotMap.CONTROLLER_POV) == 270;
-	}
-
-	public boolean getDPadUpPressed() {
-		return prevDirection != 0 && getDPadUp();
-	}
-
-	public boolean getDPadRightPressed() {
-		return prevDirection != 90 && getDPadRight();
-	}
-
-	public boolean getDPadDownPressed() {
-		return prevDirection != 180 && getDPadDown();
-	}
-
-	public boolean getDPadLeftPressed() {
-		return prevDirection != 270 && getDPadLeft();
-	}
-
-	public void updatePrevDPad() {
-		prevDirection = getPOV(RobotMap.CONTROLLER_POV);
-	}
-
-	public void outputPrev(String prefix) {
-		SmartDashboard.putNumber(prefix + " Prev", prevDirection);
-	}
+    /**
+     * Squares a number but retains the sign
+     *
+     * @param number the number to square
+     *
+     * @return squared number
+     */
+    public static double squareInput(double number) {
+        // Use abs to prevent the sign from being cancelled out
+        return Math.abs(number) * number;
+    }
 }
