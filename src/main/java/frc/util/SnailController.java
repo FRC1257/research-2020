@@ -1,49 +1,110 @@
 package frc.util;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-// Xbox controller optimized for our drive team.
+/**
+ * Xbox controller for command based programming
+ * Credit to FRC Team 319 for the original code
+ */
 
-public class SnailController extends XboxController {
+public class SnailController extends Joystick {
 
-	public SnailController(int port) {
-		super(port);
-	}
+    public static final double CONTROLLER_DEADBAND = 0.08; // deadband for joysticks
 
-	@Override
-	public double getY(Hand hand) {
-		return hand == Hand.kLeft ? -super.getY(hand) : super.getY(hand);
-	}
+    public JoystickButton aButton = new JoystickButton(this, 1);
+    public JoystickButton bButton = new JoystickButton(this, 2);
+    public JoystickButton xButton = new JoystickButton(this, 3);
+    public JoystickButton yButton = new JoystickButton(this, 4);
+    public JoystickButton leftBumper = new JoystickButton(this, 5);
+    public JoystickButton rightBumper = new JoystickButton(this, 6);
+    public JoystickButton selectButton = new JoystickButton(this, 7);
+    public JoystickButton startButton = new JoystickButton(this, 8);
+    public JoystickButton leftStickButton = new JoystickButton(this, 9);
+    public JoystickButton rightStickButton = new JoystickButton(this, 10);
+  
 
-	/*
-	 * Controls: If they press A, use single stick arcade with the left joystick
-	 * 
-	 * If they press the left bumper, use the left joystick for forward and backward
-	 * motion and the right joystick for turning
-	 * 
-	 * If they press the right bumper, use the right joystick for forward and
-	 * backward motion and the left joystick for turning
-	 */
-	
-	public double getForwardSpeed() {
-		if (getAButton())
-			return getY(Hand.kLeft);
-		else if (getBumper(Hand.kLeft))
-			return getY(Hand.kLeft);
-		else if (getBumper(Hand.kRight))
-			return getY(Hand.kRight);
-		else
-			return 0;
-	}
+    public SnailController(int port) {
+        super(port);
+    }
 
-	public double getTurnSpeed() {
-		if (getAButton())
-			return getX(Hand.kLeft);
-		else if (getBumper(Hand.kLeft))
-			return getX(Hand.kRight);
-		else if (getBumper(Hand.kRight))
-			return getX(Hand.kLeft);
-		else
-			return 0;
-	}
+    public double getLeftStickX() {
+        return applyDeadband(getRawAxis(0));
+    }
+    public double getLeftStickY() {
+        return applyDeadband(-getRawAxis(1));
+    }
+    public double getRightStickX() {
+        return applyDeadband(getRawAxis(4));
+    }
+    public double getRightStickY() {
+        return applyDeadband(-getRawAxis(5));
+    }
+
+    public double getLeftTrigger() {
+        return applyDeadband(getRawAxis(2));
+    }
+    public double getRightTrigger() {
+        return applyDeadband(-getRawAxis(3));
+    }
+
+    /*
+     * Controls: If they press A, use single stick arcade with the left joystick
+     *
+     * If they press the left bumper, use the left joystick for forward and backward
+     * motion and the right joystick for turning
+     *
+     * If they press the right bumper, use the right joystick for forward and
+     * backward motion and the left joystick for turning
+     */
+
+    public double getForwardSpeed() {
+        if (aButton.get())
+            return getLeftStickY();
+        else if (leftBumper.get())
+            return getLeftStickY();
+        else if (rightBumper.get())
+            return getRightStickY();
+        else
+            return 0;
+    }
+
+    public double getTurnSpeed() {
+        if (aButton.get())
+            return getLeftStickX();
+        else if (leftBumper.get())
+            return getRightStickX();
+        else if (rightBumper.get())
+            return getLeftStickX();
+        else
+            return 0;
+    }
+
+    /**
+     * Deadbands a number and returns the result
+     * If |number| < deadband, then the function will return 0
+     * Otherwise, it will return the number
+     *
+     * @param number the number to deadband
+     *
+     * @return deadbanded number
+     */
+    public static double applyDeadband(double number) {
+        if (Math.abs(number) < CONTROLLER_DEADBAND) {
+            return 0;
+        }
+        return number;
+    }
+
+    /**
+     * Squares a number but retains the sign
+     *
+     * @param number the number to square
+     *
+     * @return squared number
+     */
+    public static double squareInput(double number) {
+        // Use abs to prevent the sign from being cancelled out
+        return Math.abs(number) * number;
+    }
 }
