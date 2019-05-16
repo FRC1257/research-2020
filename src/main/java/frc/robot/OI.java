@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.commands.*;
 import frc.util.SnailController;
 
 public class OI {
@@ -17,7 +19,9 @@ public class OI {
         driveController = new SnailController(RobotMap.DRIVE_CONTROLLER_PORT);
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
 
-        driveController.aButton.whenPressed(new Test());
+        if(driveController.getAButtonPressed()){new Test();}
+
+
 
     }
 
@@ -52,4 +56,8 @@ public class OI {
         }
         return in;
     }
+
+	public double getClimbDriveSpeed() {
+		return operatorController.getTriggerAxis(Hand.kLeft);
+	}
 }
