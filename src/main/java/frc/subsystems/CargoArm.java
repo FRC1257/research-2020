@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.RobotMap;
-import frc.commands*;
+import frc.commands.*;
 
 /**
  * Subsystem to handle the arm controlling the cargo intake
@@ -78,7 +78,7 @@ public class CargoArm extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new CargoArmCommand());
+        
     }
     
     private void reset() {
