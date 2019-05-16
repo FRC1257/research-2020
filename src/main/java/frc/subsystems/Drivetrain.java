@@ -26,7 +26,7 @@ public class Drivetrain extends Subsystem {
     private CANSparkMax blDrive;
     private CANSparkMax brDrive;
 
-    private DifferentialDrive driveTrain;
+    private DifferentialDrive drivetrain;
     
     private double turnSpeed;
     private double driveSpeed;
@@ -57,7 +57,7 @@ public class Drivetrain extends Subsystem {
         driveSpeed = 0;
         turnSpeed = 0;
         
-        driveTrain = new DifferentialDrive(flDrive, frDrive);
+        drivetrain = new DifferentialDrive(flDrive, frDrive);
 
         reverse = false;
     }
@@ -90,7 +90,7 @@ public class Drivetrain extends Subsystem {
                 drivetrain.arcadeDrive(driveSpeed, turnSpeed);
             break;
             case CHEESY:
-                drivetrain.curvatureDrive(drivespeed, turnspeed, isQuickTurn);
+                drivetrain.curvatureDrive(driveSpeed, turnSpeed, isQuickTurn);
                 break;
         }
     }
