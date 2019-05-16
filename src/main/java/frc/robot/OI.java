@@ -31,9 +31,6 @@ public class OI {
         return applyDeadband(driveController.getTurnSpeed());
     }
 
-    public boolean getDriveToggleReverse() {
-        return driveController.getBButtonPressed();
-    }
 
     public boolean getDriveTestFL() {
         return driveController.getXButton();
