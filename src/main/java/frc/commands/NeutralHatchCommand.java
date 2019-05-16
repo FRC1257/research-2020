@@ -3,7 +3,7 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.cargointake.CargoRoller;
+import frc.subsystems.CargoRoller;
 
 /**
  * Constantly intake cargo ball in order to retain it
