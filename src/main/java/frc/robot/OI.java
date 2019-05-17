@@ -18,6 +18,7 @@ public class OI {
         driveController = new SnailController(RobotMap.DRIVE_CONTROLLER_PORT);
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
          driveController.aButton.whenPressed(new SlowTurnCommand());
+        driveController.xButton.whenPressed(new DriveReverse());
     }
 
     // Drivetrain
@@ -32,13 +33,7 @@ public class OI {
     }
 
 
-    public boolean getDriveTestFL() {
-        return driveController.getXButton();
-    }
-
-    public boolean getDriveTestFR() {
-        return driveController.getYButton();
-    }
+    
 
     public static OI getInstance() {
         if (instance == null) {
