@@ -7,11 +7,11 @@ import frc.subsystems.Drivetrain;
 
 
 
-public class AdvanceClimbCommand extends InstantCommand {
+public class DriveReverse extends InstantCommand {
 
     private Drivetrain drivetrain;
 
-    public DriveReverseCommand() {
+    public DriveReverse() {
         super();
         
         drivetrain = Robot.drivetrain;
