@@ -7,7 +7,7 @@ import frc.subsystems.Drivetrain;
 
 
 
-public class AdvanceClimb extends InstantCommand {
+public class DriveReverse extends InstantCommand {
 
     private Drivetrain drivetrain;
 
