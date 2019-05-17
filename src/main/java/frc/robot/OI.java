@@ -19,6 +19,7 @@ public class OI {
         
         driveController.abutton.whenPressed(new CheesyDriveCommand());
         driveController.ybutton.whenPressed(new QuickTurnCommand());
+        driveController.ybutton.whenPressed(new DriveReverse());
     }
 
     // Drivetrain
@@ -37,13 +38,7 @@ public class OI {
     
     
 
-    public boolean getDriveTestFL() {
-        return driveController.getXButton();
-    }
-
-    public boolean getDriveTestFR() {
-        return driveController.getYButton();
-    }
+    
 
     public static OI getInstance() {
         if (instance == null) {
