@@ -20,7 +20,7 @@ public class OI {
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
 
         driveController.aButton.whenPressed(new Test());
-	driverController.xButton.whenPressed(new DriveReverse());
+	driveController.xButton.whenPressed(new DriveReverse());
 
 
 
