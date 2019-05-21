@@ -3,19 +3,19 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import frc.robot.Robot;
-import frc.subsystems.Drivetrain;
+import frc.subsystems.DriveTrain;
 
 
 
 public class DriveReverse extends InstantCommand {
 
-    private Drivetrain drivetrain;
+    private DriveTrain driveTrain;
 
     public DriveReverse() {
         super();
         
-        drivetrain = Robot.drivetrain;
-        requires(drivetrain);
+        driveTrain = Robot.driveTrain;
+        requires(driveTrain);
     }
 
     @Override
