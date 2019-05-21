@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		climb.update();
-		drivetrain.update(Timer.getFPGATimeStamp() - lastTimeStamp);
+		drivetrain.update(Timer.getFPGATimestamp() - lastTimeStamp);
 		hatchIntake.update();
 		cargoRoller.update();
 	}
