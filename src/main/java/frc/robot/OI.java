@@ -20,7 +20,6 @@ public class OI {
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
 
         driveController.aButton.whenPressed(new Test());
-	driverController.bButton.whenPressed(Nothing.end());
 	driverController.xButton.whenPressed(new DriveReverse());
 
 
@@ -34,6 +33,10 @@ public class OI {
 
     public double getDriveTurnSpeed() {
         return applyDeadband(driveController.getTurnSpeed());
+    }
+     public boolean testProceed()
+    {
+    	return driveController.getTopPressed();  //just using the top button for now  
     }
 
 
@@ -55,6 +58,6 @@ public class OI {
     }
 
 	public double getClimbDriveSpeed() {
-		return operatorController.getRightStickY(Hand.kLeft);
+		return operatorController.getRightStickY();
 	}
 }
