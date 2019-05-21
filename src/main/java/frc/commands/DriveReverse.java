@@ -20,7 +20,7 @@ public class DriveReverse extends InstantCommand {
 
     @Override
     public void initialize() {
-        drivetrain.toggleReverse();
+        driveTrain.toggleReverse();
     }
 
     @Override
