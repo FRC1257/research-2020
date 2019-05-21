@@ -1,20 +1,24 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.OI;
 
 
-public class Nothing extends Command {
-    
-  // Just a wait command
+public class TestProceed extends Command {
+    //proceed and wait command
+    OI oi;
 
-    public Nothing() {
+    public TestProceed() {
         super();
-        
+        oi = Robot.oi;
     }
 
     @Override
     public void execute() {
-        
+        if(oi.testProceed()){
+            end();
+        }
     }
 
     @Override
