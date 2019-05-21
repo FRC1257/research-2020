@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.util.SnailController;
+import frc.commands.*;
 
 public class OI {
 
@@ -17,9 +18,9 @@ public class OI {
         driveController = new SnailController(RobotMap.DRIVE_CONTROLLER_PORT);
         operatorController = new SnailController(RobotMap.OPERATOR_CONTROLLER_PORT);
         
-        driveController.abutton.whenPressed(new CheesyDriveCommand());
-        driveController.ybutton.whenPressed(new QuickTurnCommand());
-        driveController.ybutton.whenPressed(new DriveReverse());
+        driveController.aButton.whenPressed(new CheesyDriveCommand());
+        driveController.xButton.whenPressed(new QuickTurnCommand());
+        driveController.yButton.whenPressed(new DriveReverse());
     }
 
     // Drivetrain
