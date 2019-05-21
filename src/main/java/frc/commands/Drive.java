@@ -10,8 +10,11 @@ package frc.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.subsystems.*;
 
 public class Drive extends Command {
+  private Drivetrain drivetrain;
+  private OI oi;
   public Drive() {
     drivetrain = Robot.drivetrain;
     oi = Robot.oi;
