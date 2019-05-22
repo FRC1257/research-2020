@@ -16,6 +16,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	private double lastTimeStamp;
 	public static CargoRoller cargoRoller;
+	public static Testing testing;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
 		drivetrain = new Drivetrain();
       		climb = new Climb();
         	hatchIntake = new HatchIntake();
+		testing = new Testing();
 		oi = OI.getInstance();
 		gyro = Gyro.getInstance();
 		cargoRoller = new CargoRoller();
