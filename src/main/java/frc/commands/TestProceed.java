@@ -17,9 +17,7 @@ public class TestProceed extends Command {
 
     @Override
     public void execute() {
-        if(proceed){
-            end();
-        }
+        
     }
 
     @Override
@@ -29,7 +27,6 @@ public class TestProceed extends Command {
 
     @Override
     public void end() {
-        testing.Proceedtoggle;
     }
 
     @Override
