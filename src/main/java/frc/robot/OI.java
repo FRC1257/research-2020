@@ -21,6 +21,7 @@ public class OI {
 
         driveController.aButton.whenPressed(new Test());
 	driveController.xButton.whenPressed(new DriveReverse());
+	driveController.yButton.whenPressed(new TestProceedEnd());
 
 
 
@@ -33,10 +34,6 @@ public class OI {
 
     public double getDriveTurnSpeed() {
         return applyDeadband(driveController.getTurnSpeed());
-    }
-     public boolean testProceed()
-    {
-    	return driveController.getTopPressed();  //just using the top button for now  
     }
 
 
