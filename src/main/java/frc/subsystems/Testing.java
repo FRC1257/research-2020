@@ -2,10 +2,10 @@ package frc.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.commands.*;
 
-
+//subsystem for test proceeding 
 
 public class Testing extends Subsystem {
-    boolean proceed;
+    private boolean proceed;
 
     public Testing(){
     proceed = false;
@@ -17,7 +17,11 @@ public class Testing extends Subsystem {
         //no
     }
     public void Proceedtoggle() {
-    proceed = !proceed;
+         proceed = !proceed;
     }
+    public boolean getProceed(){
+        return proceed;
+    }
+    
     
     }
