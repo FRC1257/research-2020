@@ -1,6 +1,6 @@
 package frc.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 import frc.robot.Robot;
 import frc.commands.*;
@@ -8,10 +8,10 @@ import frc.subsystems.*;
 
 
 
-public class TestProceedEnd extends InstantCommand {
+public class TestProceedEnd extends TimedCommand {
     private Testing testing;
 
-    public TestProceedEnd() {
+    public TestProceedEnd(1) {
         super();
         testing = Robot.testing;
         requires(testing);
@@ -20,7 +20,6 @@ public class TestProceedEnd extends InstantCommand {
 
     @Override
     public void initialize() {
-      testing.Proceedtoggle();
        
     }
 
