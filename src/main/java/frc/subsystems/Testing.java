@@ -16,8 +16,8 @@ public class Testing extends Subsystem {
     public void initDefaultCommand() {
         //no
     }
-    public void Proceed() {
-    proceed = true;
+    public void Proceedtoggle() {
+    proceed = !proceed;
     }
     
     }
