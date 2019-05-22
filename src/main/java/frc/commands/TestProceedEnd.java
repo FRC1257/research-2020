@@ -11,8 +11,8 @@ import frc.subsystems.*;
 public class TestProceedEnd extends TimedCommand {
     private Testing testing;
 
-    public TestProceedEnd(1) {
-        super();
+    public TestProceedEnd() {
+        super(1);
         testing = Robot.testing;
         requires(testing);
         
