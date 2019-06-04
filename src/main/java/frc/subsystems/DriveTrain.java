@@ -70,6 +70,16 @@ public class DriveTrain extends Subsystem {
      * @param z Rate of rotation, from -1 to 1.
      */
     public void drive(double x, double z) {
+        if(z==0||x==0)
+        {
+            if(reversed){
+                driveTrain.arcadeDrive(-x,-z);
+            }
+            else{
+                driveTrain.arcadeDrive(x,z);
+            }
+        }
+        else{
         if(Math.abs(x/z)>1){
         if(reverse)
         {
@@ -85,6 +95,7 @@ public class DriveTrain extends Subsystem {
         }
         else{
             driveTrain.arcadeDrive(x/(1+Math.abs(x/z)), z/(1+Math.abs(x/z)))
+        }
         }
         }
     }
