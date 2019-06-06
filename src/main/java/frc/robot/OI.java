@@ -46,7 +46,7 @@ public class OI {
         return instance;
     }
 
-    public double[] applyDeadband(double x, double z) {
+    public double[] applyDeadBand(double x, double z) {
         return driveController.applyDeadband(x,z);
     }
 }
