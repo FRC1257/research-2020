@@ -46,10 +46,7 @@ public class OI {
         return instance;
     }
 
-    public double applyDeadband(double in) {
-        if(Math.abs(in) < RobotMap.NEO_DEADBAND) {
-            return 0;
-        }
-        return in;
+    public double[] applyDeadband(double x, double z) {
+        return driveController.applyDeadband(x,z);
     }
 }
