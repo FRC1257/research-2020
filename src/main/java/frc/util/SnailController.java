@@ -45,5 +45,18 @@ public class SnailController extends XboxController {
 			return getX(Hand.kLeft);
 		else
 			return 0;
-	}
+    }
+    @Override
+    public double[] applyDeadBand(double x, double y){ // scaled radial 
+        z = Math.pow(Math.pow(x, 2)+Math.pow(y, 2),0.5); //magnitude of vector
+        if( z < RobotMap.Neo_DeadBand){  
+            double[] Zero = new double[]{0,0};
+            return Zero;
+        }
+        else{
+            double [] Deadbanded = new double[]{x*(z-Robot._Neo_DeadBand)/z,y*(z-Robot._Neo_DeadBand)/z}; 
+            return Deadbanded;
+        }
+
+    }
 }
