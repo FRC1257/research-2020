@@ -15,6 +15,7 @@ public class Drive extends Command {
   double[] DriveVector;
   public Drive() {
     requires(Robot.driveTrain);
+    double[] DriveVector = Robot.oi.applyDeadBand(Robot.oi.getDriveForwardSpeed(), Robot.oi.getDriveTurnSpeed());
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +26,7 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double[] DriveVector = Robot.oi.applyDeadBand(Robot.oi.getDriveForwardSpeed(), Robot.oi.getDriveTurnSpeed());
+    
     Robot.driveTrain.drive(DriveVector[0],DriveVector[1]);
   }
 
