@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 // Xbox controller optimized for our drive team.
 
 public class SnailController extends XboxController {
+	double [] Deadbanded;
 
 	public SnailController(int port) {
 		super(port);
@@ -50,8 +51,8 @@ public class SnailController extends XboxController {
     public double[] applyDeadBand(double x, double y){ // scaled radial 
         z = Math.pow(Math.pow(x, 2)+Math.pow(y, 2),0.5); //magnitude of vector
         if( z < RobotMap.Neo_DeadBand){  
-            double[] Zero = new double[]{0,0};
-            return Zero;
+            double[] Deadbanded = new double[]{0,0};
+            return Deadbanded;
         }
         else{
             double [] Deadbanded = new double[]{x*(z-Robot._Neo_DeadBand)/z,y*(z-Robot._Neo_DeadBand)/z}; 
