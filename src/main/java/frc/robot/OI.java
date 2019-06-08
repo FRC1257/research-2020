@@ -20,11 +20,11 @@ public class OI {
 
     // Drivetrain
     public double getDriveForwardSpeed() {
-        return applyDeadBandDrive(driveController.getForwardSpeed());
+        return applyDeadBandDrive(driveController.getForwardSpeed(),driveController.getTurnspeed());
     }
 
     public double getDriveTurnSpeed() {
-        return applyDeadBandTurn(driveController.getTurnSpeed());
+        return applyDeadBandTurn(driveController.getForwardSpeed(),driveController.getTurnspeed());
     }
 
     public boolean getDriveToggleReverse() {
