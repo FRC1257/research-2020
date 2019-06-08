@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class Drive extends Command {
-  double[] DriveVector;
   public Drive() {
     requires(Robot.driveTrain);
   }
@@ -25,8 +24,8 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double[] DriveVector = Robot.oi.applyDeadBand(Robot.oi.getDriveForwardSpeed(), Robot.oi.getDriveTurnSpeed());
-    Robot.driveTrain.drive(DriveVector[0],DriveVector[1]);
+    
+    Robot.driveTrain.drive(Robot.oi.getDriveForwardSpeed(),Robot.oi.getDriveTurnSpeed());
   }
 
   // Make this return true when this Command no longer needs to run execute()
