@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.commands.paths.RightMiddleHatch;
+import frc.robot.commands.paths.*;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Gyro;
 import easypath.EasyPathConfig;
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = new RightMiddleHatch();
+		autonomousCommand = new Test();
 		autonomousCommand.start();
 	}
 
