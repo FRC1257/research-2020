@@ -5,6 +5,7 @@ import frc.robot.RobotMap;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,6 +19,8 @@ import frc.commands.Drive;
  * @since 2019-01-21
  */
 public class DriveTrain extends Subsystem {
+    private static final WASHOUT_FILTER_CONSTANT = 0.75;
+    private static final MAX_CHANGE = 0.4;
 
     private static DriveTrain instance = null;
 
@@ -27,6 +30,13 @@ public class DriveTrain extends Subsystem {
     private CANSparkMax brDrive;
 
     private DifferentialDrive driveTrain;
+    
+    private double lastTimeStamp;
+    private double deltaT;
+    private double turnSpeed;
+    private double driveSpeed;
+    private double oldDriveSpeed;
+    
 
     private boolean reverse;
 
@@ -41,6 +51,11 @@ public class DriveTrain extends Subsystem {
         brDrive = new CANSparkMax(RobotMap.DRIVE_BR_MOTOR_ID, MotorType.kBrushless);
 
         configSpeedControllers();
+        
+        turnSpeed = 0;
+        driveSpeed = 0;
+        oldDriveSpeed=0;
+        
 
         blDrive.follow(flDrive);
         brDrive.follow(frDrive);
@@ -70,8 +85,24 @@ public class DriveTrain extends Subsystem {
      * @param z Rate of rotation, from -1 to 1.
      */
     public void drive(double x, double z) {
-        if(!reverse) driveTrain.arcadeDrive(x, z);
-        else driveTrain.arcadeDrive(-x, z);
+        oldDriveSpeed = driveSpeed;
+        turnSpeed = z;
+        //washout filter
+        driveSpeed = (1-WASHOUT_FILTER_CONSTANT)*x+WASHOUT_FILTER_CONSTANT*oldDriveSpeed;
+        if(!reverse){
+            turnSpeed = -turnSpeed;
+            driveSpeed = - driveSpeed;
+        }
+        // slew limiter
+        if((driveSpeed-oldDriveSpeed)>MAX_CHANGE){
+            driveSpeed = oldDriveSpeed + MAX_CHANGE;
+        }
+        else if((driveSpeed-oldDriveSpeed)<MAX_CHANGE){
+            driveSpeed = oldDriveSpeed - MAX_CHANGE;
+        }
+        driveTrain.arcadeDrive(driveSpeed , turnSpeed);
+        
+        
     }
 
     /**
