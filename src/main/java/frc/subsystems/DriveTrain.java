@@ -34,6 +34,7 @@ public class DriveTrain extends Subsystem {
     private double lastTimeStamp;
     private double deltaT;
     private double turnSpeed;
+    private double oldTurnSpeed;
     private double driveSpeed;
     private double oldDriveSpeed;
     
@@ -53,6 +54,7 @@ public class DriveTrain extends Subsystem {
         configSpeedControllers();
         
         turnSpeed = 0;
+        oldTurnSpeed = 0;
         driveSpeed = 0;
         oldDriveSpeed=0;
         
@@ -86,9 +88,10 @@ public class DriveTrain extends Subsystem {
      */
     public void drive(double x, double z) {
         oldDriveSpeed = driveSpeed;
-        turnSpeed = z;
+        oldTurnSpeed = turnSpeed;
         //washout filter
         driveSpeed = (1-WASHOUT_FILTER_CONSTANT)*x+WASHOUT_FILTER_CONSTANT*oldDriveSpeed;
+        turnSpeed = (1-WASHOUT_FILTER_CONSTANT)*z+WASHOUT_FILTER_CONSTANT*oldTurnSpeed;
         if(!reverse){
             turnSpeed = -turnSpeed;
             driveSpeed = - driveSpeed;
