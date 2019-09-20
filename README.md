@@ -9,3 +9,4 @@ Motion profiling++.
 * March 24, 2019: completed the first full version of the motion profiler. Still needs to be tested on Processing, but given an array of points the math works out.
 * April 11, 2019: added quintic spline interpolation. This is to be used instead of a path injector and smoother. 
 * April 12, 2019: added quintic spline functionality to the path generator.
+* September 20, 2019: revisited the project. Made it compatible with WPILib 4.1.
