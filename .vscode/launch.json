@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Spline",
+            "request": "launch",
+            "mainClass": "frc.util.motionprofile.Spline",
+            "projectName": "research-2020"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"

@@ -25,7 +25,7 @@ package frc.util.motionprofile;
     /**
      * Constructor. 
      * 
-     * @param start An array, containing the position, velocity, and acceleration vectors of the start point in (x, y) format.
+     * @param start An array, containing the position, velocity, and acceleration vectors of the start point in (x, y) format, in that order.
      * @param end Same format for the start vectors.
      */
     public Spline(double[][] start, double[][] end) {
@@ -102,8 +102,8 @@ package frc.util.motionprofile;
     public double[][] getAccel(double t) {
         double[][] result = new double[1][2];
         for(int i = 2; i < 6; ++i) {
-            result[0][0] += i * this.xCoeffs[i] * Math.pow(t, i - 2);
-            result[0][1] += i * this.yCoeffs[i] * Math.pow(t, i - 2);
+            result[0][0] += i * (i - 1) * this.xCoeffs[i] * Math.pow(t, i - 2);
+            result[0][1] += i * (i - 1) * this.yCoeffs[i] * Math.pow(t, i - 2);
         }
 
         return result;
@@ -117,10 +117,18 @@ package frc.util.motionprofile;
      */
     public double arcLength(double interval) {
         double result = 0.0;
-        for(double i = 0.0; i < 1.0; i += interval) {
-            double derivatives1[][] = getVelocity(i);
-            double derivatives2[][] = getVelocity(i + interval);
-            result += (1/2) * interval * (Math.hypot(derivatives1[0][0], derivatives1[0][1]) + Math.hypot(derivatives2[0][0], derivatives2[0][1]));
+        for(int i = 0; i < (int) Math.floor(1 / interval); i++) {
+            double derivatives1[][] = getVelocity(i * interval);
+            // System.out.println("Velocity at position " + i * interval + ": (" + derivatives1[0][0] + "," + derivatives1[0][1] + ")");
+            double derivatives2[][] = getVelocity(interval * (i + 1));
+            result = result + 0.5 * interval * (Math.hypot(derivatives1[0][0], derivatives1[0][1]) + Math.hypot(derivatives2[0][0], derivatives2[0][1]));
+            System.out.println("Arc length at position " + i * interval + ": " + result);
+            // double integrand = Math.hypot(derivatives1[0][0], derivatives1[0][1]) + Math.hypot(derivatives2[0][0], derivatives2[0][1]);
+            // System.out.println("Terms in the calculation: " + integrand);
+            // System.out.println("So is the problem the interval? " + interval);
+            // double expression = 0.5 * interval * (Math.hypot(derivatives1[0][0], derivatives1[0][1]) + Math.hypot(derivatives2[0][0], derivatives2[0][1]));
+            // System.out.println("So what the hell is the problem? " + expression);
+            // You're kidding me, right? Really? (1/2) doesn't work but 0.5 does? What in the actual.
         }
 
         return result;
@@ -136,16 +144,15 @@ package frc.util.motionprofile;
     public double[][] interpolate(double interval, double spacing) {
         double arc = arcLength(interval);
         int numPoints = (int) Math.floor(arc / spacing);
-        double[][] result = new double[numPoints + 1][5];
+        double[][] result = new double[numPoints + 1][4];
         for(int i = 0; i <= numPoints; ++i) {
-            double[][] temp = getPosition(i / numPoints);
-            double[][] temp2 = getVelocity(i / numPoints);
+            double[][] temp = getPosition((1.0 * i) / numPoints);
+            double[][] temp2 = getVelocity((1.0 * i) / numPoints);
 
             result[i][0] = temp[0][0];
             result[i][1] = temp[0][1];
             result[i][2] = temp2[0][0];
             result[i][3] = temp2[0][1];
-            result[i][4] = speed(i / numPoints);
         }
 
         return result;
@@ -161,10 +168,10 @@ package frc.util.motionprofile;
      * @return A 2*2 array, with the first row being the velocity vector and the next being the acceleration vector.
      */
     public static double[][] givenAngle(double angle, double velocity, double acceleration) {
-        double angleRadian = angle * Math.PI / 180;
+        double angleRadian = angle * Math.PI / 180.0;
         double[][] result = new double[][] {
             {velocity * Math.cos(angleRadian), velocity * Math.sin(angleRadian)},
-            {acceleration * Math.cos(angleRadian), velocity * Math.sin(angleRadian)}
+            {acceleration * Math.cos(angleRadian), acceleration * Math.sin(angleRadian)}
         };
 
         return result;
@@ -179,5 +186,33 @@ package frc.util.motionprofile;
         double[][] temp = getVelocity(t);
 
         return Math.hypot(temp[0][0], temp[0][1]);
+    }
+
+    public static void main(String[] args) {
+        double[][] testStart = new double[][] {
+            {3, 1},
+            {4, 1},
+            {5, 9},
+        };
+        double[][] testEnd = new double[][] {
+            {2, 6},
+            {5, 3},
+            {5, 8}
+        };
+
+        Spline testSpline = new Spline(testStart, testEnd);
+        testSpline.calculateCoeffs();
+        // for(int i = 0; i < 6; i++) {
+        //     // System.out.println("x-coordinate number " + i + ": " + testSpline.xCoeffs[i]);
+        //     // System.out.println("y-coordinate number " + i + ": " + testSpline.yCoeffs[i]);
+        //     double d = 456 / 205.0;
+        //     System.out.println(d);
+        // }
+
+        // int sum = 0;
+        // for(int j = 0; j < 6; j++) {
+        //     sum += j;
+        // }
+        // System.out.println(sum);
     }
  }
