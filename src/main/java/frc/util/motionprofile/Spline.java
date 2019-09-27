@@ -48,17 +48,17 @@ package frc.util.motionprofile;
     public void calculateCoeffs() {
         this.xCoeffs[0] = this.start[0][0];
         this.xCoeffs[1] = this.start[1][0];
-        this.xCoeffs[2] = (1/2) * this.start[2][0];
-        this.xCoeffs[3] = 10 * (this.end[0][0] - this.start[0][0]) - (4 * this.end[1][0] + 6 * this.start[1][0]) - ((3/2) * this.start[2][0] - (1/2) * this.end[2][0]);
-        this.xCoeffs[4] = 15 * (this.end[0][0] - this.start[0][0]) + 7 * this.end[1][0] + 8 * this.start[1][0] + (3/2) * this.start[2][0] - this.end[2][0];
-        this.xCoeffs[5] = 6 * (this.end[0][0] - this.start[0][0]) - 3 * (this.end[1][0] + this.start[1][0]) + (1/2) * (this.end[2][0] - this.start[2][0]);
+        this.xCoeffs[2] = 0.5 * this.start[2][0];
+        this.xCoeffs[3] = 10 * (this.end[0][0] - this.start[0][0]) - (4 * this.end[1][0] + 6 * this.start[1][0]) - (1.5 * this.start[2][0] - 0.5 * this.end[2][0]);
+        this.xCoeffs[4] = 15 * (this.end[0][0] - this.start[0][0]) + 7 * this.end[1][0] + 8 * this.start[1][0] + 1.5 * this.start[2][0] - this.end[2][0];
+        this.xCoeffs[5] = 6 * (this.end[0][0] - this.start[0][0]) - 3 * (this.end[1][0] + this.start[1][0]) + 0.5 * (this.end[2][0] - this.start[2][0]);
 
         this.yCoeffs[0] = this.start[0][1];
         this.yCoeffs[1] = this.start[1][1];
-        this.yCoeffs[2] = (1/2) * this.start[2][1];
-        this.yCoeffs[3] = 10 * (this.end[0][1] - this.start[0][1]) - (4 * this.end[1][1] + 6 * this.start[1][1]) - ((3/2) * this.start[2][1] - (1/2) * this.end[2][1]);
-        this.yCoeffs[4] = 15 * (this.end[0][1] - this.start[0][1]) + 7 * this.end[1][1] + 8 * this.start[1][1] + (3/2) * this.start[2][1] - this.end[2][1];
-        this.yCoeffs[5] = 6 * (this.end[0][1] - this.start[0][1]) - 3 * (this.end[1][1] + this.start[1][1]) + (1/2) * (this.end[2][1] - this.start[2][1]);
+        this.yCoeffs[2] = 0.5 * this.start[2][1];
+        this.yCoeffs[3] = 10 * (this.end[0][1] - this.start[0][1]) - (4 * this.end[1][1] + 6 * this.start[1][1]) - (1.5 * this.start[2][1] - 0.5 * this.end[2][1]);
+        this.yCoeffs[4] = 15 * (this.end[0][1] - this.start[0][1]) + 7 * this.end[1][1] + 8 * this.start[1][1] + 1.5 * this.start[2][1] - this.end[2][1];
+        this.yCoeffs[5] = 6 * (this.end[0][1] - this.start[0][1]) - 3 * (this.end[1][1] + this.start[1][1]) + 0.5 * (this.end[2][1] - this.start[2][1]);
     }
 
     /** 
@@ -202,17 +202,10 @@ package frc.util.motionprofile;
 
         Spline testSpline = new Spline(testStart, testEnd);
         testSpline.calculateCoeffs();
-        // for(int i = 0; i < 6; i++) {
-        //     // System.out.println("x-coordinate number " + i + ": " + testSpline.xCoeffs[i]);
-        //     // System.out.println("y-coordinate number " + i + ": " + testSpline.yCoeffs[i]);
-        //     double d = 456 / 205.0;
-        //     System.out.println(d);
-        // }
-
-        // int sum = 0;
-        // for(int j = 0; j < 6; j++) {
-        //     sum += j;
-        // }
-        // System.out.println(sum);
+        for(int i = 0; i < 6; i++) {
+            System.out.println("x-coordinate number " + i + ": " + testSpline.xCoeffs[i]);
+            System.out.println("y-coordinate number " + i + ": " + testSpline.yCoeffs[i]);
+            System.out.println("Arc length:" + testSpline.arcLength(0.001));
+        }
     }
  }
