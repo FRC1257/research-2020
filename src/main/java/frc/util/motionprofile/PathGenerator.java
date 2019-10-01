@@ -277,7 +277,7 @@ public class PathGenerator {
 		 * 
 		 * @return A 2*2 array, with the first row having the x and y coordinates and the second having the fractional index and the index.
 		 */
-		public double[][] lookaheadPoint() {
+		public double[][] lookaheadPoint(double objectLookaheadRadius) {
             double[][] point;
             double[][] result = this.currentLookaheadPoint;
 			point = new double[][] {
@@ -296,10 +296,11 @@ public class PathGenerator {
 				};
 				double a = Magnitude(d[0][0], d[0][1], 0.0, 0.0) * Magnitude(d[0][0], d[0][1], 0.0, 0.0);
 				double b = 2 * (d[0][0] * f[0][0] + d[0][1] * f[0][1]);
-				double c = Magnitude(f[0][0], f[0][1], 0.0, 0.0) * Magnitude(f[0][0], f[0][1], 0.0, 0.0) - this.lookaheadRadius * this.lookaheadRadius;
+				double c = Magnitude(f[0][0], f[0][1], 0.0, 0.0) * Magnitude(f[0][0], f[0][1], 0.0, 0.0) - objectLookaheadRadius * objectLookaheadRadius;
 				double discriminant = b * b - 4 * a * c;
 
 				if(discriminant < 0) {
+					return lookaheadPoint(objectLookaheadRadius - 0.1);
 				} else {
 					discriminant = Math.sqrt(discriminant);
 					double t1 = (-b - discriminant) / (2 * a);
@@ -556,7 +557,7 @@ public class PathGenerator {
 		}
 
 		public void updateLookaheadPoint() {
-			this.currentLookaheadPoint = lookaheadPoint();
+			this.currentLookaheadPoint = lookaheadPoint(this.lookaheadRadius);
 		}
 
 		/**
