@@ -36,7 +36,7 @@ public class PathGenerator {
 		// this.path = inject(6.0);
 		// // May change the second and third values depending on the path.
 		// this.path = smoother(this.path, 0.87, 0.13, 0.001);
-		double[][] temp = path.interpolate(0.01, 6);
+		double[][] temp = path.interpolate(0.01, 6.0);
 		for(int i = 0; i < temp.length; ++i) {
 			this.path[i][0] = temp[i][0];
 			this.path[i][1] = temp[i][1];
@@ -55,7 +55,7 @@ public class PathGenerator {
 		this.prevClosestPoint = 0;
 
 		this.segV = new double[this.path.length];
-		this.segV[this.path.length- 1] = 0.0;
+		this.segV[this.path.length - 1] = 0.0;
 		for(int i = this.path.length - 2; i >= 0; i--) {
 			double[][] temp2 = new double[][] {
 				{this.path[i - 1][0], this.path[i - 1][1]},
@@ -216,15 +216,15 @@ public class PathGenerator {
 	
 			double r;
 			if((path[1][1] - path[0][1]) / (path[1][0] - path[0][0]) == (path[2][1] - path[1][1]) / (path[2][0] - path[1][0])) {
-				r = 999999999.0;
+				r = 0.0;
 			} else {
 				r = Math.sqrt((path[0][0] - a) * (path[0][0] - a) + (path[0][1] - b) * (path[0][1] - b));
 			}
 			// System.out.println("Radius: " + r);
 	
-			if((path[1][1] - path[0][1]) / (path[1][0] - path[0][0]) == (path[2][1] - path[1][1]) / (path[2][0] - path[1][0])) {
-				return 0.0;
-			}
+			// if((path[1][1] - path[0][1]) / (path[1][0] - path[0][0]) == (path[2][1] - path[1][1]) / (path[2][0] - path[1][0])) {
+			// 	return 0.0;
+			// }
 			return 1 / r;
 		}
 
@@ -287,7 +287,7 @@ public class PathGenerator {
 			};
 			int index = (int) Math.round(this.currentLookaheadPoint[1][1]);
 			// Another search.
-			for(int i = index + 1; i < this.path.length - 1; ++i) {
+			for(int i = index; i < this.path.length - 1; ++i) {
 				double[][] d = new double[][] {
 					{this.path[i + 1][0] - this.path[i][0], this.path[i + 1][1] - this.path[i][1]},
 				};
@@ -507,6 +507,8 @@ public class PathGenerator {
 		 * @return If the value is positive, the lookahead point is on the right; it's on the left if otherwise.
 		 */
 		public double lookaheadCurvature() {
+			updateLookaheadPoint();
+			
 			double dx = this.currentLookaheadPoint[0][0] - this.robotPos[0][0];
 			double dy = this.currentLookaheadPoint[0][1] - this.robotPos[0][1];
 
@@ -514,14 +516,14 @@ public class PathGenerator {
 			double cos = dy / lookaheadDistance;
 			double tan = dy / dx;
 
-			double a = -1 * tan;
+			double a = -1.0 * tan;
 			double c = tan * this.robotPos[0][0] - this.robotPos[0][1];
 			// Point-to-line
 			double x = Math.abs(a * this.currentLookaheadPoint[0][0] + this.currentLookaheadPoint[0][1] + c) / Math.sqrt(a * a + 1);
 
 			double sign = Math.signum((this.currentLookaheadPoint[0][0] - this.robotPos[0][0]) - cos * (this.currentLookaheadPoint[0][1] - this.robotPos[0][1]));
 
-			return 2 * sign * x / (lookaheadDistance * lookaheadDistance);
+			return 2.0 * sign * x / (lookaheadDistance * lookaheadDistance);
 		}
 
 		/**
