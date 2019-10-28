@@ -16,3 +16,5 @@ I don't have a test bot, so here's a simulator that assumes that the robot has c
     * `swap`
     * `updatePos`
 * **October 22, 2019:** I need help with physics, namely tankdrive physics. I have no clue how uniform circular motion works.
+
+* **October 28, 2019:** Spend the entire day figuring out how to install FRC programs on a Windows machine. Also, GitHub is being weird with how it's storing code here so I'll upload code somehwere else.
